@@ -1,4 +1,11 @@
 <resources>
-    <string name="app_name">Map2018</string>
+    <string name="app_name">T-ComRoom</string>
     <string name="collection_user_location_student">userLocation_student</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="userlocations_array">Userlocation_Array</string>
+    <string name="nav_places">Places</string>
+    <string name="nav_requests">Requests</string>
+    <string name="nav_appoinments">Appointments</string>
 </resources>
