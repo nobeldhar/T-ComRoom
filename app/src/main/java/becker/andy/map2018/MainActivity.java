@@ -9,13 +9,17 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -42,6 +46,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import becker.andy.map2018.classes.UserClient;
+import becker.andy.map2018.fragments.AppointmentsFragment;
+import becker.andy.map2018.fragments.MapFragment;
+import becker.andy.map2018.fragments.RequestsFragment;
 import becker.andy.map2018.models.ClusterMarker;
 import becker.andy.map2018.models.User;
 import becker.andy.map2018.models.UserLocation;
@@ -50,7 +57,7 @@ import becker.andy.map2018.utils.MyClusterManagerRenderer;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private MapView mMapView;
+
 
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     private static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9001;
@@ -60,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private boolean mLocationPermissionGranted = false;
 
     private List<User>mUserList=new ArrayList<>();
-    private List<UserLocation>mUserLocations=new ArrayList<>();
+    private ArrayList<UserLocation>mUserLocations=new ArrayList<>();
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
     FirebaseFirestore mDb;
@@ -73,29 +80,74 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private MyClusterManagerRenderer mClusterManagerRenderer;
     private ArrayList<ClusterMarker> mClusterMarkers=new ArrayList<>();
 
+    private BottomNavigationView mMainNav;
+    private FrameLayout mFragmentContainer;
+
+    //fragments
+    public MapFragment mapFragment;
+    public RequestsFragment requestsFragment;
+    public AppointmentsFragment appointmentsFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mDb = FirebaseFirestore.getInstance();
-        Bundle mapViewBundle = null;
-        if (savedInstanceState != null) {
-            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
+        mMainNav=findViewById(R.id.main_nav);
+        mFragmentContainer=findViewById(R.id.fragment_container);
+
+        synchronized (this){
+            initUser(savedInstanceState);
         }
-        mMapView = findViewById(R.id.user_list_map);
-        mMapView.onCreate(mapViewBundle);
 
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        mMainNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.nav_places:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container, mapFragment).commit();
+                        return true;
+                    case R.id.nav_requests:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container, requestsFragment).commit();
+                        return true;
+                    case R.id.nav_appointments:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container, appointmentsFragment).commit();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
 
-        initUser();
-        getLastKnownLocation(new User(),new UserLocation());
-
-        mMapView.getMapAsync(this);
-        
     }
 
-    private void initUser() {
+    private synchronized void init() {
+
+        mapFragment = new MapFragment();
+        Bundle bundle=new Bundle();
+        bundle.putParcelableArrayList(getString(R.string.userlocations_array),  mUserLocations);
+        mapFragment.setArguments(bundle);
+
+        requestsFragment=new RequestsFragment();
+
+        appointmentsFragment=new AppointmentsFragment();
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, mapFragment).commit();
+
+
+
+
+
+
+
+    }
+
+    private synchronized void initUser(final Bundle savedInstanceState) {
         User user=new User();
         user.setEmail("nobeld@gmail.com");
         user.setResponse("ok");
@@ -118,9 +170,34 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         user2.setUserName("milon");
         mUserList.add(user1);
         mUserList.add(user2);
-        for(User u: mUserList){
-            getUserLocation(u);
-            Log.d(TAG, "initUser: in user array");
+        for(int i=0; i<mUserList.size();i++){
+            synchronized (this){
+                DocumentReference locationRef=mDb.collection(getString(R.string.collection_user_location_student))
+                        .document(mUserList.get(i).getUserId());
+                final int finalI = i;
+                locationRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            if(task.getResult().toObject(UserLocation.class)!= null){
+                                Log.d(TAG, "Location onComplete: ");
+                                UserLocation u=task.getResult().toObject(UserLocation.class);
+                                mUserLocations.add(u);
+                                Log.d(TAG, "initUser: in user array");
+                                if(finalI ==mUserList.size()-1){
+                                    //notify();
+                                    init();
+                                }
+
+                            }else {
+                                Log.d(TAG, "onComplete: result is empty");
+                            }
+                        }
+                    }
+                });
+
+            }
+
         }
 
 
@@ -142,25 +219,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Log.d(TAG, "setCameraView: user position is null");
         }
     }
-    private void getUserLocation(User user){
+    private  void getUserLocation(User user){
         Log.d(TAG, "getUserLocation: ");
-        DocumentReference locationRef=mDb.collection(getString(R.string.collection_user_location_student))
-                .document(user.getUserId());
-        locationRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    if(task.getResult().toObject(UserLocation.class)!= null){
-                        Log.d(TAG, "Location onComplete: ");
-                        UserLocation u=task.getResult().toObject(UserLocation.class);
-                        mUserLocations.add(u);
-
-                    }else {
-                        Log.d(TAG, "onComplete: result is empty");
-                    }
-                }
-            }
-        });
 
     }
 
@@ -279,18 +339,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d(TAG, "getLastKnownLocation: last");
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
 
-        Bundle mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY);
-        if (mapViewBundle == null) {
-            mapViewBundle = new Bundle();
-            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
-        }
-
-        mMapView.onSaveInstanceState(mapViewBundle);
-    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -315,48 +364,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mMapView.onStart();
-    }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mMapView.onStop();
-    }
-
-    @Override
-    protected void onPause() {
-        mMapView.onPause();
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        mMapView.onDestroy();
-        super.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mMapView.onLowMemory();
-    }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        mMapView.onResume();
+
         if(checkMapServices()){
             if(mLocationPermissionGranted){
                 Log.d(TAG, "onResume: ");
-
-
-                //addMapMarkers();
-
 
             }else{
 

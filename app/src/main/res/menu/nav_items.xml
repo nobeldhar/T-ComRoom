@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_places"
+        android:icon="@drawable/place_black_24dp"
+        android:title="@string/nav_places" />
+    <item
+        android:id="@+id/nav_requests"
+        android:icon="@drawable/notifications_none_black_24dp"
+        android:title="@string/nav_requests" />
+    <item
+        android:id="@+id/nav_appointments"
+        android:icon="@drawable/meeting_room_black_24dp"
+        android:title="Appoints"/>
+</menu>
