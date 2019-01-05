@@ -3,6 +3,7 @@ package becker.andy.map2018.fragments;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import becker.andy.map2018.R;
+import becker.andy.map2018.SetAppointmentActivity;
 import becker.andy.map2018.classes.UserClient;
 import becker.andy.map2018.models.User;
 import becker.andy.map2018.models.UserLocation;
@@ -104,6 +107,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             return;
         }
         googleMap.setMyLocationEnabled(true);
+        mGoogleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+            @Override
+            public void onMarkerDragStart(Marker marker) {
+                for(UserLocation u: mUserLocations){
+                    if(u.getUser().getUserName().equals(marker.getTitle())){
+                        //marker.setVisible(false);
+                        Log.d(TAG, "onMarkerDragStart: "+u.getUser().getUserName());
+                        Intent intent=new Intent(getActivity(),SetAppointmentActivity.class);
+                        intent.putExtra(getString(R.string.appointment_extra),u);
+                        startActivity(intent);
+                    }
+                }
+            }
+
+            @Override
+            public void onMarkerDrag(Marker marker) {
+
+            }
+
+            @Override
+            public void onMarkerDragEnd(Marker marker) {
+
+            }
+        });
     }
 
 
@@ -178,6 +205,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     Log.d(TAG, "onComplete: " + userLocation.getUser().getUserName());
                     Log.d(TAG, "onComplete: " + userLocation.getGeo_point().toString());
                     markerOptions.snippet(userLocation.getGeo_point().toString());
+                    markerOptions.draggable(true);
                     markerOptions.position(new LatLng(userLocation.getGeo_point().getLatitude(), userLocation.getGeo_point().getLongitude()));
                     mGoogleMap.addMarker(markerOptions);
                 }

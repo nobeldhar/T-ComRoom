@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.StuRegFragment">
+
+    <com.jgabrielfreitas.core.BlurImageView
+        android:id="@+id/bookBlurImageViewUp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerCrop"
+        android:layout_centerHorizontal="true"
+        app:radius="24"
+        android:src="@drawable/shahidminar" />
+    <RelativeLayout
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:id="@+id/progressBarRegister"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:indeterminate="true"
+            android:progressTint="@color/colorAccent"
+            android:visibility="invisible" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/white_imageUp"
+            android:layout_width="290dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/white_image"
+            android:layout_height="350dp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/pdsg"
+        android:layout_width="290dp"
+        android:layout_height="350dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        <RelativeLayout
+            android:layout_width="290dp"
+            android:layout_height="350dp">
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:background="@drawable/new_acc_btn"
+            android:text="T-ComRoom"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:layout_centerHorizontal="true"/>
+        <RelativeLayout
+            android:layout_marginTop="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="250dp"
+            android:layout_height="50dp">
+
+            <EditText
+                android:id="@+id/register_email_stu_reg"
+                android:inputType="textEmailAddress"
+                android:layout_marginRight="2dp"
+                android:textSize="15dp"
+                android:textColor="@android:color/black"
+                android:hint="Email"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_marginTop="160dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="250dp"
+            android:layout_height="50dp">
+
+            <EditText
+                android:id="@+id/register_password_stu_reg"
+                android:hint="Password"
+                android:textSize="15dp"
+                android:textColor="@android:color/black"
+                android:layout_marginRight="2dp"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_marginTop="220dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="250dp"
+            android:layout_height="50dp">
+
+            <EditText
+                android:id="@+id/confirm_password_stu_reg"
+                android:hint="Confirm Password"
+                android:textSize="15dp"
+                android:textColor="@android:color/black"
+                android:layout_marginRight="2dp"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+            <RelativeLayout
+                android:layout_marginTop="280dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="250dp"
+                android:layout_height="50dp">
+
+                <EditText
+                    android:id="@+id/stu_register_name"
+                    android:inputType="textEmailAddress"
+                    android:layout_marginRight="2dp"
+                    android:textSize="15dp"
+                    android:textColor="@android:color/black"
+                    android:hint="User Name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_marginTop="340dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="250dp"
+                android:layout_height="50dp">
+
+                <EditText
+                    android:id="@+id/stu_register_insti"
+                    android:inputType="text"
+                    android:layout_marginRight="2dp"
+                    android:textSize="15dp"
+                    android:textColor="@android:color/black"
+                    android:hint="Institution (Short name)"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_marginTop="400dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="250dp"
+                android:layout_height="50dp">
+
+                <EditText
+                    android:id="@+id/stu_register_reg"
+                    android:inputType="textEmailAddress"
+                    android:layout_marginRight="2dp"
+                    android:textSize="15dp"
+                    android:textColor="@android:color/black"
+                    android:hint="Reg. No."
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_marginTop="460dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="250dp"
+                android:layout_height="50dp">
+
+                <EditText
+                    android:id="@+id/stu_register_department"
+                    android:inputType="textEmailAddress"
+                    android:layout_marginRight="2dp"
+                    android:textSize="15dp"
+                    android:textColor="@android:color/black"
+                    android:hint="Department"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_marginTop="520dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="250dp"
+                android:layout_height="50dp">
+
+                <EditText
+                    android:id="@+id/stu_register_year"
+                    android:inputType="textEmailAddress"
+                    android:layout_marginRight="2dp"
+                    android:textSize="15dp"
+                    android:textColor="@android:color/black"
+                    android:hint="Year/Semester"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/asdf"
+                android:layout_marginTop="580dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="250dp"
+                android:layout_height="50dp">
+
+                <EditText
+                    android:id="@+id/stu_register_phone"
+                    android:inputType="number"
+                    android:layout_marginRight="2dp"
+                    android:textSize="15dp"
+                    android:textColor="@android:color/black"
+                    android:hint="Phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_stu_register"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:layout_width="200dp"
+            android:background="@drawable/login_btn"
+            android:text="login"
+            android:elevation="3dp"
+            android:textColor="@android:color/white"
+            android:layout_below="@+id/asdf"
+            android:layout_height="45dp" />
+        </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_below="@+id/pdsg"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:layout_width="250dp"
+        android:layout_height="45dp">
+        <TextView
+            android:text="Have an Account? "
+            android:textColor="@android:color/white"
+            android:textSize="17dp"
+            android:gravity="end|center_vertical"
+            android:textStyle="bold"
+            android:layout_toStartOf="@+id/btn_have_acc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <ImageButton
+            android:id="@+id/btn_have_acc"
+            android:layout_alignParentRight="true"
+            android:layout_width="50dp"
+            android:background="@drawable/new_acc_btn"
+            android:src="@drawable/baseline_arrow_back_black_18dp"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+</RelativeLayout>

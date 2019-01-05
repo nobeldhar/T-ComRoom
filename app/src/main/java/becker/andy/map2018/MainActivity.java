@@ -19,7 +19,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -84,9 +86,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private FrameLayout mFragmentContainer;
 
     //fragments
-    public MapFragment mapFragment;
-    public RequestsFragment requestsFragment;
-    public AppointmentsFragment appointmentsFragment;
+    public MapFragment mapFragment=new MapFragment();
+    public RequestsFragment requestsFragment=new RequestsFragment();
+    public AppointmentsFragment appointmentsFragment=new AppointmentsFragment();
+    //widgets
+    private ProgressBar mMainProgressBar;
 
 
     @Override
@@ -96,6 +100,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mDb = FirebaseFirestore.getInstance();
         mMainNav=findViewById(R.id.main_nav);
         mFragmentContainer=findViewById(R.id.fragment_container);
+        mMainProgressBar=findViewById(R.id.main_progressBar);
+        mMainProgressBar.setVisibility(View.VISIBLE);
 
         synchronized (this){
             initUser(savedInstanceState);
@@ -136,6 +142,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         appointmentsFragment=new AppointmentsFragment();
 
+        mMainProgressBar.setVisibility(View.GONE);
+
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, mapFragment).commit();
 
@@ -175,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 DocumentReference locationRef=mDb.collection(getString(R.string.collection_user_location_student))
                         .document(mUserList.get(i).getUserId());
                 final int finalI = i;
+                final int finalI1 = i;
                 locationRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -182,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             if(task.getResult().toObject(UserLocation.class)!= null){
                                 Log.d(TAG, "Location onComplete: ");
                                 UserLocation u=task.getResult().toObject(UserLocation.class);
+                                u.setUser(mUserList.get(finalI1));
                                 mUserLocations.add(u);
                                 Log.d(TAG, "initUser: in user array");
                                 if(finalI ==mUserList.size()-1){

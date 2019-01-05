@@ -6,7 +6,7 @@ public class User {
 
     @SerializedName("user_id")
     private String UserId;
-    @SerializedName("user_name")
+    @SerializedName("name")
     private String UserName;
     @SerializedName("user")
     private String User;
@@ -14,6 +14,16 @@ public class User {
     private String Email;
     @SerializedName("response")
     private String Response;
+    @SerializedName("institution")
+    private String Institution;
+
+    public String getUserId() {
+        return UserId;
+    }
+
+    public void setUserId(String userId) {
+        UserId = userId;
+    }
 
     public String getUserName() {
         return UserName;
@@ -46,11 +56,12 @@ public class User {
     public void setResponse(String response) {
         Response = response;
     }
-    public String getUserId() {
-        return UserId;
+
+    public String getInstitution() {
+        return Institution;
     }
 
-    public void setUserId(String userId) {
-        UserId = userId;
+    public void setInstitution(String institution) {
+        Institution = institution;
     }
 }
