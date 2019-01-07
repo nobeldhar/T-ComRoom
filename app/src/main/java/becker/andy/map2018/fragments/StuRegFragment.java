@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.jgabrielfreitas.core.BlurImageView;
 
+import becker.andy.map2018.LoginActivity;
 import becker.andy.map2018.MainActivity;
 import becker.andy.map2018.R;
 import becker.andy.map2018.RegisterActivity;
@@ -78,6 +79,12 @@ public class StuRegFragment extends Fragment {
 
         mButtonReg=view.findViewById(R.id.btn_stu_register);
         mHaveAcc=view.findViewById(R.id.btn_have_acc);
+        mHaveAcc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(),LoginActivity.class));
+            }
+        });
 
         mProgressBar=view.findViewById(R.id.progressBarRegister_stu);
 

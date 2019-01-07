@@ -13,14 +13,14 @@ public class UserLocation implements Parcelable  {
 
     private GeoPoint geo_point;
     private @ServerTimestamp Date timestamp;
-    private User user;
+    private Requests requests;
 
-    public UserLocation(GeoPoint geo_point, Date timestamp, User user) {
+
+    public UserLocation(GeoPoint geo_point, Date timestamp, Requests requests) {
         this.geo_point = geo_point;
         this.timestamp = timestamp;
-        this.user = user;
+        this.requests = requests;
     }
-
     public UserLocation() {
 
     }
@@ -56,21 +56,12 @@ public class UserLocation implements Parcelable  {
         this.timestamp = timestamp;
     }
 
-    public User getUser() {
-        return user;
+    public Requests getRequests() {
+        return requests;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    @Override
-    public String toString() {
-        return "UserLocation{" +
-                "geo_point=" + geo_point +
-                ", timestamp=" + timestamp +
-                ", user=" + user +
-                '}';
+    public void setRequests(Requests requests) {
+        this.requests = requests;
     }
 
     @Override

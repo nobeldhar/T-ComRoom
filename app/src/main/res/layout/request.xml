@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="5dp"
+    app:cardElevation="10dp"
+    app:cardCornerRadius="2dp"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_margin="10dp"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Name:  "
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:textSize="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/request_name"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:textSize="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <Button
+                android:id="@+id/request_Set_appointment"
+                android:text="Set Appointment"
+                android:textSize="10dp"
+                android:textColor="@android:color/white"
+                android:layout_margin="10dp"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/login_btn"
+                android:layout_width="90dp"
+                android:layout_height="30dp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/qwe"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Institute: "
+                android:textColor="@android:color/black"
+                android:textStyle="normal"
+                android:textSize="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_toEndOf="@+id/qwe"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/request_institute"
+                android:textColor="@android:color/black"
+                android:textStyle="normal"
+                android:textSize="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/dept"
+                android:layout_toEndOf="@+id/request_institute"
+                android:layout_marginBottom="10dp"
+                android:text=" Dept: "
+                android:textColor="@android:color/black"
+                android:textStyle="normal"
+                android:textSize="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_toEndOf="@+id/dept"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/request_dept"
+                android:textColor="@android:color/black"
+                android:textStyle="normal"
+                android:textSize="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/ys"
+                android:layout_toEndOf="@+id/request_dept"
+                android:layout_marginBottom="10dp"
+                android:text=" Y/S: "
+                android:textColor="@android:color/black"
+                android:textStyle="normal"
+                android:textSize="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_toEndOf="@+id/ys"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/request_ys"
+                android:textColor="@android:color/black"
+                android:textStyle="normal"
+                android:textSize="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Button
+                android:textSize="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentEnd="true"
+                android:text="Delete"
+                android:id="@+id/request_delete"
+                android:textColor="@android:color/black"
+                android:background="@drawable/delete_button"
+                android:layout_width="90dp"
+                android:layout_height="30dp" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</android.support.design.card.MaterialCardView>

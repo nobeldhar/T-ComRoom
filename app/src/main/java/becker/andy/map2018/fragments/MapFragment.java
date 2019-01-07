@@ -111,9 +111,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onMarkerDragStart(Marker marker) {
                 for(UserLocation u: mUserLocations){
-                    if(u.getUser().getUserName().equals(marker.getTitle())){
+                    if(u.getRequests().getStudentName().equals(marker.getTitle())){
                         //marker.setVisible(false);
-                        Log.d(TAG, "onMarkerDragStart: "+u.getUser().getUserName());
+                        Log.d(TAG, "onMarkerDragStart: "+u.getRequests().getStudentName());
                         Intent intent=new Intent(getActivity(),SetAppointmentActivity.class);
                         intent.putExtra(getString(R.string.appointment_extra),u);
                         startActivity(intent);
@@ -156,8 +156,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 Log.d(TAG, "onComplete: latitude " + geoPoint.getLatitude());
                                 Log.d(TAG, "onComplete: longitude " + geoPoint.getLongitude());
                                 mUserPosition=new UserLocation();
-                                User user1=((UserClient)(getActivity().getApplicationContext())).getUser();
-                                mUserPosition.setUser(user1);
                                 mUserPosition.setGeo_point(geoPoint);
                                 mUserPosition.setTimestamp(null);
                                 setCameraView();
@@ -201,10 +199,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             if(mUserLocations.size()>0){
                 for(UserLocation userLocation: mUserLocations){
                     MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.title(userLocation.getUser().getUserName());
-                    Log.d(TAG, "onComplete: " + userLocation.getUser().getUserName());
+                    markerOptions.title(userLocation.getRequests().getStudentName());
+                    Log.d(TAG, "onComplete: " + userLocation.getRequests().getStudentName());
                     Log.d(TAG, "onComplete: " + userLocation.getGeo_point().toString());
-                    markerOptions.snippet(userLocation.getGeo_point().toString());
+                    markerOptions.snippet(userLocation.getRequests().toString());
                     markerOptions.draggable(true);
                     markerOptions.position(new LatLng(userLocation.getGeo_point().getLatitude(), userLocation.getGeo_point().getLongitude()));
                     mGoogleMap.addMarker(markerOptions);
