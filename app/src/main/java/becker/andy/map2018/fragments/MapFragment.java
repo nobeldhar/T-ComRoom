@@ -222,7 +222,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         user.setEmail("nobeld@gmail.com");
         user.setResponse("ok");
         user.setUser("student");
-        user.setUserId("5");
+        user.setUserId(5);
         user.setUserName("nobel");
         ((UserClient)(getActivity().getApplicationContext())).setUser(user);
         mUserList.add(user);
@@ -230,13 +230,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         user1.setEmail("rahuld@gmail.com");
         user1.setResponse("ok");
         user1.setUser("student");
-        user1.setUserId("6");
+        user1.setUserId(6);
         user1.setUserName("rahul");
         User user2=new User();
         user2.setEmail("milond@gmail.com");
         user2.setResponse("ok");
         user2.setUser("student");
-        user2.setUserId("7");
+        user2.setUserId(7);
         user2.setUserName("milon");
         mUserList.add(user1);
         mUserList.add(user2);

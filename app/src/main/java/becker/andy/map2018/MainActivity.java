@@ -47,6 +47,7 @@ import com.google.maps.android.clustering.ClusterManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import becker.andy.map2018.classes.PrefConfig;
 import becker.andy.map2018.classes.UserClient;
 import becker.andy.map2018.fragments.AppointmentsFragment;
 import becker.andy.map2018.fragments.MapFragment;
@@ -54,6 +55,8 @@ import becker.andy.map2018.fragments.RequestsFragment;
 import becker.andy.map2018.models.ClusterMarker;
 import becker.andy.map2018.models.User;
 import becker.andy.map2018.models.UserLocation;
+import becker.andy.map2018.retrofit.ApiClient;
+import becker.andy.map2018.retrofit.ApiInterface;
 import becker.andy.map2018.utils.MyClusterManagerRenderer;
 
 
@@ -91,6 +94,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public AppointmentsFragment appointmentsFragment=new AppointmentsFragment();
     //widgets
     private ProgressBar mMainProgressBar;
+    //prefconfig
+
 
 
     @Override
@@ -102,6 +107,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mFragmentContainer=findViewById(R.id.fragment_container);
         mMainProgressBar=findViewById(R.id.main_progressBar);
         mMainProgressBar.setVisibility(View.VISIBLE);
+
+
+
 
         synchronized (this){
             initUser(savedInstanceState);
@@ -160,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         user.setEmail("nobeld@gmail.com");
         user.setResponse("ok");
         user.setUser("student");
-        user.setUserId("5");
+        user.setUserId(5);
         user.setUserName("nobel");
         ((UserClient)(getApplicationContext())).setUser(user);
         mUserList.add(user);
@@ -168,20 +176,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         user1.setEmail("rahuld@gmail.com");
         user1.setResponse("ok");
         user1.setUser("student");
-        user1.setUserId("6");
+        user1.setUserId(6);
         user1.setUserName("rahul");
         User user2=new User();
         user2.setEmail("milond@gmail.com");
         user2.setResponse("ok");
         user2.setUser("student");
-        user2.setUserId("7");
+        user2.setUserId(7);
         user2.setUserName("milon");
         mUserList.add(user1);
         mUserList.add(user2);
         for(int i=0; i<mUserList.size();i++){
             synchronized (this){
                 DocumentReference locationRef=mDb.collection(getString(R.string.collection_user_location_student))
-                        .document(mUserList.get(i).getUserId());
+                        .document(Integer.toString( mUserList.get(i).getUserId()));
                 final int finalI = i;
                 final int finalI1 = i;
                 locationRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -289,7 +297,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(mUserLocation != null){
 
             DocumentReference locationRef=mDb.collection(getString(R.string.collection_user_location_student))
-                    .document(user.getUserId());
+                    .document(Integer.toString(user.getUserId()));
             locationRef.set(mUserLocation).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {

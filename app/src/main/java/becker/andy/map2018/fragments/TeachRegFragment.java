@@ -30,7 +30,7 @@ import static android.content.ContentValues.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StuRegFragment extends Fragment {
+public class TeachRegFragment extends Fragment {
 
     private BlurImageView blurImageView;
     private ImageView imageView;
@@ -50,8 +50,7 @@ public class StuRegFragment extends Fragment {
     //progressbar
     private ProgressBar mProgressBar;
 
-
-    public StuRegFragment() {
+    public TeachRegFragment() {
         // Required empty public constructor
     }
 
@@ -60,64 +59,68 @@ public class StuRegFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_stu_reg, container, false);
-        blurImageView=view.findViewById(R.id.bookBlurImageViewUp);
+        View view= inflater.inflate(R.layout.fragment_teach_reg, container, false);
+
+        blurImageView=view.findViewById(R.id.bookBlurImageViewteach);
         blurImageView.setBlur(2);
-        imageView=view.findViewById(R.id.white_imageUp);
+        imageView=view.findViewById(R.id.white_imageteach);
         imageView.setAlpha(.7f);
 
-        mEmail=view.findViewById(R.id.register_email_stu_reg);
-        mPassword=view.findViewById(R.id.register_password_stu_reg);
-        mConfirmPassword=view.findViewById(R.id.confirm_password_stu_reg);
-        mUserName=view.findViewById(R.id.stu_register_name);
-        mInstitution=view.findViewById(R.id.stu_register_insti);
-        mRegNo=view.findViewById(R.id.stu_register_reg);
-        mDepartment=view.findViewById(R.id.stu_register_department);
-        mYear_Semester=view.findViewById(R.id.stu_register_year);
-        mPhone=view.findViewById(R.id.stu_register_phone);
+        mEmail=view.findViewById(R.id.register_email_teach_reg);
+        mPassword=view.findViewById(R.id.register_password_teach_reg);
+        mConfirmPassword=view.findViewById(R.id.confirm_password_teach_reg);
+        mUserName=view.findViewById(R.id.teach_register_name);
+        mInstitution=view.findViewById(R.id.teach_register_insti);
+        mDepartment=view.findViewById(R.id.teach_register_department);
+        mPhone=view.findViewById(R.id.teach_register_phone);
 
-        mButtonReg=view.findViewById(R.id.btn_stu_register);
-        mHaveAcc=view.findViewById(R.id.btn_have_acc);
+        mButtonReg=view.findViewById(R.id.btn_teach_register);
+        mHaveAcc=view.findViewById(R.id.btn_have_acc_teach);
+        mHaveAcc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //startActivity(new Intent(getActivity(),));
+            }
+        });
 
-        mProgressBar=view.findViewById(R.id.progressBarRegister_stu);
+        mProgressBar=view.findViewById(R.id.progressBarRegister_teach);
 
         mButtonReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registerStudent();
+                registerTeacher();
             }
         });
-
-
-        return view;
+        return  view;
     }
 
-    private void registerStudent() {
+    private void registerTeacher() {
         mProgressBar.setVisibility(View.VISIBLE);
         String email=mEmail.getText().toString().trim();
         String pass=mPassword.getText().toString().trim();
         String conPass=mConfirmPassword.getText().toString().trim();
         String name=mUserName.getText().toString().trim();
-        final String reg=mRegNo.getText().toString().trim();
         String insti=mInstitution.getText().toString().trim();
         String dept=mDepartment.getText().toString().trim();
-        String year=mYear_Semester.getText().toString().trim();
+
         String phone=mPhone.getText().toString().trim();
 
         if(!pass.equals(conPass)){
             Toast.makeText(getActivity(),"Passwords Don't match", Toast.LENGTH_LONG).show();
+            mProgressBar.setVisibility(View.GONE);
             return;
         }
 
         if(email.equals("") || pass.equals("") || conPass.equals("") || name.equals("") ||
-                reg.equals("") || insti.equals("") || dept.equals("") || year.equals("") ||
+                 insti.equals("") || dept.equals("") ||
                 phone.equals("")){
 
             Toast.makeText(getActivity(),"Every Field Have to be Fullfilled",Toast.LENGTH_LONG).show();
+            mProgressBar.setVisibility(View.GONE);
             return;
         }
 
-        Call<User> call=RegisterActivity.apiInterface.performRegisterStudent(email,pass,name,insti,dept,reg,year,phone);
+        Call<User> call=RegisterActivity.apiInterface.performRegisterTeacher(email,pass,name,insti,dept,phone);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -146,9 +149,6 @@ public class StuRegFragment extends Fragment {
                 Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
     }
 
 }
