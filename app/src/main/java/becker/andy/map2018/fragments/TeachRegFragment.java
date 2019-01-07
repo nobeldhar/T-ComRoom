@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.jgabrielfreitas.core.BlurImageView;
 
+import becker.andy.map2018.LoginActivity;
 import becker.andy.map2018.MainActivity;
 import becker.andy.map2018.R;
 import becker.andy.map2018.RegisterActivity;
@@ -40,9 +41,7 @@ public class TeachRegFragment extends Fragment {
     private EditText mConfirmPassword;
     private EditText mUserName;
     private EditText mInstitution;
-    private EditText mRegNo;
     private EditText mDepartment;
-    private EditText mYear_Semester;
     private EditText mPhone;
     //buttons
     private Button mButtonReg;
@@ -79,7 +78,7 @@ public class TeachRegFragment extends Fragment {
         mHaveAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(getActivity(),));
+                startActivity(new Intent(getActivity(),LoginActivity.class));
             }
         });
 

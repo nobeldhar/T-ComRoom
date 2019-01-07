@@ -9,4 +9,6 @@
     <string name="nav_requests">Requests</string>
     <string name="nav_appoinments">Appointments</string>
     <string name="appointment_extra">appointment_intent_extra</string>
+    <string name="userLocations_teachers">UserLocation_teachers</string>
+    <string name="students_requests_array">students_requests</string>
 </resources>

@@ -17,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,11 +54,14 @@ import becker.andy.map2018.fragments.AppointmentsFragment;
 import becker.andy.map2018.fragments.MapFragment;
 import becker.andy.map2018.fragments.RequestsFragment;
 import becker.andy.map2018.models.ClusterMarker;
+import becker.andy.map2018.models.Requests;
 import becker.andy.map2018.models.User;
 import becker.andy.map2018.models.UserLocation;
 import becker.andy.map2018.retrofit.ApiClient;
 import becker.andy.map2018.retrofit.ApiInterface;
 import becker.andy.map2018.utils.MyClusterManagerRenderer;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -71,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final int ERROR_DIALOG_REQUEST = 9003;
     private boolean mLocationPermissionGranted = false;
 
-    private List<User>mUserList=new ArrayList<>();
+    private ArrayList<Requests>mRequestsList=new ArrayList<>();
     private ArrayList<UserLocation>mUserLocations=new ArrayList<>();
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -109,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMainProgressBar.setVisibility(View.VISIBLE);
 
 
-
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         synchronized (this){
             initUser(savedInstanceState);
@@ -147,6 +151,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.setArguments(bundle);
 
         requestsFragment=new RequestsFragment();
+        Bundle bundle2=new Bundle();
+        bundle2.putParcelableArrayList(getString(R.string.userlocations_array),  mUserLocations);
+        requestsFragment.setArguments(bundle2);
 
         appointmentsFragment=new AppointmentsFragment();
 
@@ -164,59 +171,56 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private synchronized void initUser(final Bundle savedInstanceState) {
-        User user=new User();
-        user.setEmail("nobeld@gmail.com");
-        user.setResponse("ok");
-        user.setUser("student");
-        user.setUserId(5);
-        user.setUserName("nobel");
-        ((UserClient)(getApplicationContext())).setUser(user);
-        mUserList.add(user);
-        User user1=new User();
-        user1.setEmail("rahuld@gmail.com");
-        user1.setResponse("ok");
-        user1.setUser("student");
-        user1.setUserId(6);
-        user1.setUserName("rahul");
-        User user2=new User();
-        user2.setEmail("milond@gmail.com");
-        user2.setResponse("ok");
-        user2.setUser("student");
-        user2.setUserId(7);
-        user2.setUserName("milon");
-        mUserList.add(user1);
-        mUserList.add(user2);
-        for(int i=0; i<mUserList.size();i++){
-            synchronized (this){
-                DocumentReference locationRef=mDb.collection(getString(R.string.collection_user_location_student))
-                        .document(Integer.toString( mUserList.get(i).getUserId()));
-                final int finalI = i;
-                final int finalI1 = i;
-                locationRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()){
-                            if(task.getResult().toObject(UserLocation.class)!= null){
-                                Log.d(TAG, "Location onComplete: ");
-                                UserLocation u=task.getResult().toObject(UserLocation.class);
-                                u.setUser(mUserList.get(finalI1));
-                                mUserLocations.add(u);
-                                Log.d(TAG, "initUser: in user array");
-                                if(finalI ==mUserList.size()-1){
-                                    //notify();
-                                    init();
+
+        retrofit2.Call<List<Requests>> call=RegisterActivity.apiInterface.getRequests(RegisterActivity.prefConfig.readUserId());
+        call.enqueue(new Callback<List<Requests>>() {
+            @Override
+            public void onResponse(retrofit2.Call<List<Requests>> call, Response<List<Requests>> response) {
+                if(response.isSuccessful()){
+                    mRequestsList= (ArrayList<Requests>) response.body();
+                    for(int i=0; i<mRequestsList.size();i++){
+                        synchronized (this){
+                            DocumentReference locationRef=mDb.collection(getString(R.string.collection_user_location_student))
+                                    .document(Integer.toString( mRequestsList.get(i).getStudent_id()));
+                            final int finalI = i;
+                            final int finalI1 = i;
+                            locationRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if(task.isSuccessful()){
+                                        if(task.getResult()!= null){
+                                            Log.d(TAG, "Location onComplete: ");
+                                            UserLocation userLocation=task.getResult().toObject(UserLocation.class);
+                                            UserLocation u=new UserLocation();
+                                                    u.setGeo_point(userLocation.getGeo_point());
+                                            u.setRequests(mRequestsList.get(finalI1));
+                                            mUserLocations.add(u);
+                                            Log.d(TAG, "initUser: in user array");
+                                            if(finalI ==mRequestsList.size()-1){
+                                                //notify();
+                                                init();
+                                                getLastKnownLocation(new UserLocation());
+                                            }
+
+                                        }else {
+                                            Log.d(TAG, "onComplete: result is empty");
+                                        }
+                                    }
                                 }
+                            });
 
-                            }else {
-                                Log.d(TAG, "onComplete: result is empty");
-                            }
                         }
-                    }
-                });
 
+                    }
+                }
             }
 
-        }
+            @Override
+            public void onFailure(retrofit2.Call<List<Requests>> call, Throwable t) {
+
+            }
+        });
+
 
 
 
@@ -242,62 +246,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    private void addMapMarkers(){
-        Log.d(TAG, "addMapMarkers: inside");
-        if(mGoogleMap != null){
-            if(mClusterManager == null){
-                Log.d(TAG, "addMapMarkers: cluster manager intiated");
-                mClusterManager=new ClusterManager(this,mGoogleMap);
-            }
-            if(mClusterManagerRenderer == null){
-                Log.d(TAG, "addMapMarkers: renderer initiated");
-                mClusterManagerRenderer =new MyClusterManagerRenderer(
-                        this,
-                        mGoogleMap,
-                        mClusterManager
-                );
-                mClusterManager.setRenderer(mClusterManagerRenderer);
-            }
-            for(UserLocation userLocation: mUserLocations){
-                try{
-                    String snippet=userLocation.getGeo_point().toString();
-                    int image=R.drawable.marker_png;
 
-                    ClusterMarker newClusterMarker=new ClusterMarker(
-                            new LatLng(userLocation.getGeo_point().getLatitude(),userLocation.getGeo_point().getLatitude()),
-                            userLocation.getUser().getUserName(),
-                            snippet,
-                            image,
-                            userLocation.getUser()
-                    );
-                    mClusterManager.addItem(newClusterMarker);
-                    mClusterMarkers.add(newClusterMarker);
-                    Log.d(TAG, "addMapMarkers: marker added");
-                }catch (NullPointerException e){
-                    Log.d(TAG, "addMapMarkers: "+e.getMessage().toString());
-                }
-            }
-            mClusterManager.cluster();
-        }
-    }
 
-    private void getUserDetails(User user){
+    private void getUserDetails(){
          UserLocation mUserLocation=null;
         if(mUserLocation == null){
             mUserLocation=new UserLocation();
-            mUserLocation.setUser(user);
-            getLastKnownLocation(user,mUserLocation);
+            getLastKnownLocation(mUserLocation);
         }
         else {
-            getLastKnownLocation(user,mUserLocation);
+            getLastKnownLocation(mUserLocation);
         }
     }
 
-    private void saveUserLocation(User user, final UserLocation mUserLocation){
+    private void saveUserLocation(final UserLocation mUserLocation){
         if(mUserLocation != null){
 
-            DocumentReference locationRef=mDb.collection(getString(R.string.collection_user_location_student))
-                    .document(Integer.toString(user.getUserId()));
+            DocumentReference locationRef=mDb.collection(getString(R.string.userLocations_teachers))
+                    .document(Integer.toString(RegisterActivity.prefConfig.readUserId()));
             locationRef.set(mUserLocation).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -313,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    private void getLastKnownLocation(final User user, final UserLocation mUserLocation) {
+    private void getLastKnownLocation( final UserLocation UserLocation) {
         Log.d(TAG, "getLastKnownLocation: ");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "getLastKnownLocation: inside");
@@ -332,12 +298,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         GeoPoint geoPoint = new GeoPoint(task.getResult().getLatitude(), task.getResult().getLongitude());
                         Log.d(TAG, "onComplete: latitude " + geoPoint.getLatitude());
                         Log.d(TAG, "onComplete: longitude " + geoPoint.getLongitude());
-                        mUserPosition=new UserLocation();
-                        User user1=((UserClient)(getApplicationContext())).getUser();
-                        mUserPosition.setUser(user1);
-                        mUserPosition.setGeo_point(geoPoint);
-                        mUserPosition.setTimestamp(null);
-                        //saveUserLocation(user,mUserLocation);
+                        UserLocation.setGeo_point(geoPoint);
+                        UserLocation.setTimestamp(null);
+                        saveUserLocation(UserLocation);
                         Log.d(TAG, "onComplete: eeee");
                     }
                     else {
@@ -371,8 +334,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         for(UserLocation userLocation: mUserLocations) {
             Log.d(TAG, "onMapReady: marker added");
             MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.title(userLocation.getUser().getUserName());
-            markerOptions.snippet(userLocation.getGeo_point().toString());
+            markerOptions.title(userLocation.getRequests().getStudentName());
+            markerOptions.snippet(userLocation.getRequests().toString());
             markerOptions.position(new LatLng(userLocation.getGeo_point().getLatitude(),userLocation.getGeo_point().getLongitude()));
             googleMap.addMarker(markerOptions);
         }

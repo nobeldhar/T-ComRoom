@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".SetAppointmentActivity">
     <TextView
-        android:id="@+id/text_name"
+        android:id="@+id/student_name"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
