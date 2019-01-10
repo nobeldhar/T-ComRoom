@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    private synchronized void init() {
+    private synchronized void init(Bundle savedInstanceState) {
 
         mapFragment = new MapFragment();
         Bundle bundle=new Bundle();
@@ -159,6 +159,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mMainProgressBar.setVisibility(View.GONE);
 
+        if (savedInstanceState != null) {
+            return;
+        }
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, mapFragment).commit();
 
@@ -172,44 +175,49 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private synchronized void initUser(final Bundle savedInstanceState) {
 
-        retrofit2.Call<List<Requests>> call=RegisterActivity.apiInterface.getRequests(RegisterActivity.prefConfig.readUserId());
+        retrofit2.Call<List<Requests>> call=LoginActivity.apiInterface.getRequests(LoginActivity.prefConfig.readUserId());
         call.enqueue(new Callback<List<Requests>>() {
             @Override
             public void onResponse(retrofit2.Call<List<Requests>> call, Response<List<Requests>> response) {
                 if(response.isSuccessful()){
                     mRequestsList= (ArrayList<Requests>) response.body();
-                    for(int i=0; i<mRequestsList.size();i++){
-                        synchronized (this){
-                            DocumentReference locationRef=mDb.collection(getString(R.string.collection_user_location_student))
-                                    .document(Integer.toString( mRequestsList.get(i).getStudent_id()));
-                            final int finalI = i;
-                            final int finalI1 = i;
-                            locationRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if(task.isSuccessful()){
-                                        if(task.getResult()!= null){
-                                            Log.d(TAG, "Location onComplete: ");
-                                            UserLocation userLocation=task.getResult().toObject(UserLocation.class);
-                                            UserLocation u=new UserLocation();
-                                                    u.setGeo_point(userLocation.getGeo_point());
-                                            u.setRequests(mRequestsList.get(finalI1));
-                                            mUserLocations.add(u);
-                                            Log.d(TAG, "initUser: in user array");
-                                            if(finalI ==mRequestsList.size()-1){
-                                                //notify();
-                                                init();
-                                                getLastKnownLocation(new UserLocation());
-                                            }
+                    if(mRequestsList.size()>0){
+                        for(int i=0; i<mRequestsList.size();i++){
+                            synchronized (this){
+                                DocumentReference locationRef=mDb.collection(getString(R.string.collection_user_location_student))
+                                        .document(Integer.toString( mRequestsList.get(i).getStudent_id()));
+                                final int finalI = i;
+                                final int finalI1 = i;
+                                locationRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if(task.isSuccessful()){
+                                            if(task.getResult()!= null){
+                                                Log.d(TAG, "Location onComplete: ");
+                                                UserLocation userLocation=task.getResult().toObject(UserLocation.class);
+                                                UserLocation u=new UserLocation();
+                                                u.setGeo_point(userLocation.getGeo_point());
+                                                u.setRequests(mRequestsList.get(finalI1));
+                                                mUserLocations.add(u);
+                                                Log.d(TAG, "initUser: in user array");
+                                                if(finalI ==mRequestsList.size()-1){
+                                                    //notify();
+                                                    init(savedInstanceState);
 
-                                        }else {
-                                            Log.d(TAG, "onComplete: result is empty");
+                                                }
+
+                                            }else {
+                                                Log.d(TAG, "onComplete: result is empty");
+                                            }
                                         }
                                     }
-                                }
-                            });
+                                });
+
+                            }
 
                         }
+                    }else {
+                        init(savedInstanceState);
 
                     }
                 }
@@ -263,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(mUserLocation != null){
 
             DocumentReference locationRef=mDb.collection(getString(R.string.userLocations_teachers))
-                    .document(Integer.toString(RegisterActivity.prefConfig.readUserId()));
+                    .document(Integer.toString(LoginActivity.prefConfig.readUserId()));
             locationRef.set(mUserLocation).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -407,7 +415,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
-
+            getLastKnownLocation(new UserLocation());
         } else {
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
@@ -447,6 +455,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mLocationPermissionGranted = true;
+                    getLastKnownLocation(new UserLocation());
                 }
             }
         }
@@ -459,6 +468,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ENABLE_GPS: {
                 if(mLocationPermissionGranted){
+
                 }
                 else{
                     getLocationPermission();

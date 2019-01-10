@@ -124,7 +124,7 @@ public class StuRegFragment extends Fragment {
             return;
         }
 
-        Call<User> call=RegisterActivity.apiInterface.performRegisterStudent(email,pass,name,insti,dept,reg,year,phone);
+        Call<User> call=LoginActivity.apiInterface.performRegisterStudent(email,pass,name,insti,dept,reg,year,phone);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -132,11 +132,11 @@ public class StuRegFragment extends Fragment {
                 if(response.isSuccessful()){
                     if(response.body().getResponse().equals("ok")){
 
-                        RegisterActivity.prefConfig.writeLoginStatus(true);
-                        RegisterActivity.prefConfig.writeUserId(response.body().getUserId());
-                        RegisterActivity.prefConfig.writeEmail(response.body().getEmail());
-                        RegisterActivity.prefConfig.writeUser(response.body().getUser());
-                        RegisterActivity.prefConfig.writeInsti(response.body().getInstitution());
+                        LoginActivity.prefConfig.writeLoginStatus(true);
+                        LoginActivity.prefConfig.writeUserId(response.body().getUserId());
+                        LoginActivity.prefConfig.writeEmail(response.body().getEmail());
+                        LoginActivity.prefConfig.writeUser(response.body().getUser());
+                        LoginActivity.prefConfig.writeInsti(response.body().getInstitution());
                         startActivity(new Intent(getActivity(),MainActivity.class));
                     }else {
                         Log.d(TAG, "onResponse: error");

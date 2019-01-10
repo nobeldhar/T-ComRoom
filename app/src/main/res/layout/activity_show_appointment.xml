@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ShowAppointmentActivity">
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/polo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.v7.widget.CardView
+                android:id="@+id/appointment_cardview"
+                android:layout_width="match_parent"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="5dp"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:padding="10dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:textSize="15dp"
+                        android:gravity="center"
+                        android:textColor="@android:color/white"
+                        android:background="@color/colorPrimaryDark"
+                        android:text="Appointment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/showappointment_name"
+                        android:text="Nobel"
+                        android:textColor="@android:color/black"
+                        android:gravity="center"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp" />
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:text="Reg. No. : "
+                            android:textSize="15dp"
+                            android:textColor="@android:color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/showappointment_reg"
+                            android:textSize="15dp"
+                            android:textColor="@android:color/black"
+                            android:layout_width="100dp"
+                            android:gravity="center_horizontal"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:text="Semester/year : "
+                            android:textSize="15dp"
+                            android:layout_marginLeft="5dp"
+                            android:textColor="@android:color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:gravity="center_horizontal"
+                            android:id="@+id/showappointment_ys"
+                            android:textSize="15dp"
+                            android:textColor="@android:color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:text="Department : "
+                            android:textSize="15dp"
+                            android:layout_width="wrap_content"
+                            android:textColor="@android:color/black"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/showappointment_dept"
+                            android:textSize="15dp"
+                            android:gravity="center_horizontal"
+                            android:layout_width="75dp"
+                            android:textColor="@android:color/black"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:text="Institution : "
+                            android:textSize="15dp"
+                            android:layout_marginLeft="5dp"
+                            android:textColor="@android:color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/showappointment_insti"
+                            android:textSize="15dp"
+                            android:gravity="center_horizontal"
+                            android:layout_width="wrap_content"
+                            android:textColor="@android:color/black"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:text="Subject : "
+                            android:textSize="15dp"
+                            android:textColor="@android:color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/showappointment_subject"
+                            android:textSize="15dp"
+                            android:textColor="@android:color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:text="Description : "
+                            android:textSize="15dp"
+                            android:textColor="@android:color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/showappointment_description"
+                            android:textSize="15dp"
+                            android:layout_width="wrap_content"
+                            android:textColor="@android:color/black"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:text="Message : "
+                            android:textSize="15dp"
+                            android:textColor="@android:color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/showappointment_message"
+                            android:textSize="15dp"
+                            android:layout_width="match_parent"
+                            android:textColor="@android:color/black"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:text="Date : "
+                            android:textSize="15dp"
+                            android:textColor="@android:color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/showappointment_date"
+                            android:textSize="15dp"
+                            android:layout_width="100dp"
+                            android:textColor="@android:color/black"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_marginLeft="5dp"
+                            android:text="Time : "
+                            android:textSize="15dp"
+                            android:textColor="@android:color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/showappointment_time"
+                            android:textSize="15dp"
+                            android:layout_width="100dp"
+                            android:textColor="@android:color/black"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+            <Button
+                android:layout_below="@+id/appointment_cardview"
+                android:layout_marginBottom="30dp"
+                android:layout_centerHorizontal="true"
+                android:elevation="3dp"
+                android:id="@+id/btn_succesful_appointment"
+                android:textColor="@android:color/white"
+                android:text="Succesful"
+                android:background="@drawable/login_btn"
+                android:layout_marginTop="40dp"
+                android:layout_gravity="center"
+                android:layout_width="180dp"
+                android:layout_height="40dp" />
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:id="@+id/progressBarShowAppointmetn"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:indeterminate="true"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

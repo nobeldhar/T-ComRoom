@@ -17,16 +17,14 @@ import becker.andy.map2018.retrofit.ApiInterface;
 public class RegisterActivity extends AppCompatActivity implements RegChooseFragment.PerformRegFragmentListener {
 
     //preconfig
-    public static PrefConfig prefConfig;
-    public static ApiInterface apiInterface;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        prefConfig=new PrefConfig(this);
-        apiInterface=ApiClient.getApiClient().create(ApiInterface.class);
+
 
 
       getSupportFragmentManager().beginTransaction()

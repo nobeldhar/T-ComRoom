@@ -7,7 +7,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    public static final String BASE_URL="http://192.168.50.102/tcomroom/";
+    public static final String BASE_URL="http://192.168.50.101/tcomroom/";
     public static Retrofit retrofit=null;
 
     public static Retrofit getApiClient(){

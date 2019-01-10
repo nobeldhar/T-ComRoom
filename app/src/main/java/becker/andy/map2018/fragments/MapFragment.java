@@ -115,7 +115,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         //marker.setVisible(false);
                         Log.d(TAG, "onMarkerDragStart: "+u.getRequests().getStudentName());
                         Intent intent=new Intent(getActivity(),SetAppointmentActivity.class);
-                        intent.putExtra(getString(R.string.appointment_extra),u);
+                        intent.putExtra(getString(R.string.studentId_intent_extra),u.getRequests().getStudent_id());
                         startActivity(intent);
                     }
                 }

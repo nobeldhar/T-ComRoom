@@ -114,6 +114,7 @@
             android:layout_alignParentBottom="true"
             android:layout_height="45dp" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
