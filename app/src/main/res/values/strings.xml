@@ -11,4 +11,6 @@
     <string name="appointment_extra">appointment_intent_extra</string>
     <string name="userLocations_teachers">UserLocation_teachers</string>
     <string name="students_requests_array">students_requests</string>
+    <string name="studentId_intent_extra">studentId_intent_extra</string>
+    <string name="showAppointment_extra">ShowAppointment_extra</string>
 </resources>

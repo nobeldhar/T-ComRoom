@@ -14,7 +14,10 @@ import android.widget.Toast;
 
 import com.jgabrielfreitas.core.BlurImageView;
 
+import becker.andy.map2018.classes.PrefConfig;
 import becker.andy.map2018.models.User;
+import becker.andy.map2018.retrofit.ApiClient;
+import becker.andy.map2018.retrofit.ApiInterface;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,6 +25,9 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class LoginActivity extends AppCompatActivity {
+
+    public static PrefConfig prefConfig;
+    public static ApiInterface apiInterface;
 
     private BlurImageView blurImageView;
     private ImageView imageView;
@@ -37,6 +43,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
+        prefConfig=new PrefConfig(this);
+        apiInterface=ApiClient.getApiClient().create(ApiInterface.class);
+        if(prefConfig.readLoginStatus()){
+            startActivity(new Intent(this,MainActivity.class));
+        }
 
         blurImageView=findViewById(R.id.bookBlurImageViewLogin);
         blurImageView.setBlur(2);
@@ -74,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
             mProgressBar.setVisibility(View.GONE);
             return;
         }
-        Call<User> call=RegisterActivity.apiInterface.performLogin(email,pass);
+        Call<User> call=LoginActivity.apiInterface.performLogin(email,pass);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -82,11 +95,11 @@ public class LoginActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     if(response.body().getResponse().equals("ok")){
 
-                        RegisterActivity.prefConfig.writeLoginStatus(true);
-                        RegisterActivity.prefConfig.writeUserId(response.body().getUserId());
-                        RegisterActivity.prefConfig.writeEmail(response.body().getEmail());
-                        RegisterActivity.prefConfig.writeUser(response.body().getUser());
-                        RegisterActivity.prefConfig.writeInsti(response.body().getInstitution());
+                        LoginActivity.prefConfig.writeLoginStatus(true);
+                        LoginActivity.prefConfig.writeUserId(response.body().getUserId());
+                        LoginActivity.prefConfig.writeEmail(response.body().getEmail());
+                        LoginActivity.prefConfig.writeUser(response.body().getUser());
+                        LoginActivity.prefConfig.writeInsti(response.body().getInstitution());
                         startActivity(new Intent(LoginActivity.this,MainActivity.class));
                     }if(response.body().getResponse().equals("failed")){
 

@@ -9,7 +9,7 @@ import com.google.firebase.firestore.ServerTimestamp;
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserLocation implements Parcelable  {
+public class UserLocation implements Parcelable {
 
     private GeoPoint geo_point;
     private @ServerTimestamp Date timestamp;

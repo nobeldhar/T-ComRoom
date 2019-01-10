@@ -41,12 +41,13 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
         myViewHolder.institute.setText(mUserlocations.get(i).getRequests().getInstitution());
         myViewHolder.dept.setText(mUserlocations.get(i).getRequests().getDepartment());
         myViewHolder.y_s.setText(mUserlocations.get(i).getRequests().getYear_Semester());
+        myViewHolder.sub.setText(mUserlocations.get(i).getRequests().getSubject());
         myViewHolder.set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 UserLocation u= mUserlocations.get(i);
                 Intent intent=new Intent(context,SetAppointmentActivity.class);
-                intent.putExtra(context.getString(R.string.appointment_extra),u);
+                intent.putExtra(context.getString(R.string.studentId_intent_extra),u.getRequests().getStudent_id());
                 context.startActivity(intent);
             }
         });
@@ -63,6 +64,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
         TextView institute;
         TextView dept;
         TextView y_s;
+        TextView sub;
         Button set;
         Button delete;
         public MyViewHolder(@NonNull View itemView) {
@@ -71,6 +73,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
             institute=itemView.findViewById(R.id.request_institute);
             dept=itemView.findViewById(R.id.request_dept);
             y_s=itemView.findViewById(R.id.request_ys);
+            sub=itemView.findViewById(R.id.request_sub);
             set=itemView.findViewById(R.id.request_Set_appointment);
             delete=itemView.findViewById(R.id.request_delete);
         }
