@@ -24,7 +24,9 @@ public class RegisterActivity extends AppCompatActivity implements RegChooseFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-
+        if(LoginActivity.prefConfig.readLoginStatus()){
+            return;
+        }
 
 
       getSupportFragmentManager().beginTransaction()

@@ -1,5 +1,7 @@
 package becker.andy.map2018;
 
+import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -109,6 +111,7 @@ public class ShowAppointmentActivity extends AppCompatActivity {
                 mProgressBar.setVisibility(View.GONE);
                 if(response.isSuccessful()){
                     if(response.body().getResponse().equals("ok")){
+                        startActivity(new Intent(ShowAppointmentActivity.this,MainActivity.class));
                         Toast.makeText(ShowAppointmentActivity.this,"Appointment removed",Toast.LENGTH_LONG).show();
                     }else {
                         Toast.makeText(ShowAppointmentActivity.this,"Appointment not removed",Toast.LENGTH_LONG).show();

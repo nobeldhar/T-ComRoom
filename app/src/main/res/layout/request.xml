@@ -7,15 +7,27 @@
     app:cardCornerRadius="2dp"
     android:layout_height="wrap_content">
     <LinearLayout
+        android:background="@drawable/request"
+        android:layout_margin="10dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/profile" />
+        </LinearLayout>
         <RelativeLayout
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
-                android:layout_margin="10dp"
+                android:layout_marginLeft="10dp"
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -36,10 +48,10 @@
             </LinearLayout>
             <Button
                 android:id="@+id/request_Set_appointment"
-                android:text="Set Appointment"
+                android:text="Set  Appointment"
                 android:textSize="10dp"
                 android:textColor="@android:color/white"
-                android:layout_margin="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_alignParentEnd="true"
                 android:background="@drawable/login_btn"
                 android:layout_width="90dp"
@@ -108,7 +120,7 @@
                 android:layout_height="wrap_content" />
             <Button
                 android:textSize="10dp"
-                android:layout_marginBottom="10dp"
+
                 android:layout_marginRight="10dp"
                 android:layout_alignParentEnd="true"
                 android:text="Delete"

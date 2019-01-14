@@ -132,7 +132,8 @@ public class TeachRegFragment extends Fragment {
                         LoginActivity.prefConfig.writeEmail(response.body().getEmail());
                         LoginActivity.prefConfig.writeUser(response.body().getUser());
                         LoginActivity.prefConfig.writeInsti(response.body().getInstitution());
-                        startActivity(new Intent(getActivity(),MainActivity.class));
+                        finish();
+
                     }else {
                         Log.d(TAG, "onResponse: error");
                     }
@@ -148,6 +149,12 @@ public class TeachRegFragment extends Fragment {
                 Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void finish() {
+        finish();
+        startActivity(new Intent(getActivity(),MainActivity.class));
+
     }
 
 }

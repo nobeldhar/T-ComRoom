@@ -19,6 +19,7 @@ import com.jgabrielfreitas.core.BlurImageView;
 
 import becker.andy.map2018.LoginActivity;
 import becker.andy.map2018.MainActivity;
+import becker.andy.map2018.MainActivityStudent;
 import becker.andy.map2018.R;
 import becker.andy.map2018.RegisterActivity;
 import becker.andy.map2018.models.User;
@@ -137,7 +138,7 @@ public class StuRegFragment extends Fragment {
                         LoginActivity.prefConfig.writeEmail(response.body().getEmail());
                         LoginActivity.prefConfig.writeUser(response.body().getUser());
                         LoginActivity.prefConfig.writeInsti(response.body().getInstitution());
-                        startActivity(new Intent(getActivity(),MainActivity.class));
+                        finish();
                     }else {
                         Log.d(TAG, "onResponse: error");
                     }
@@ -155,6 +156,12 @@ public class StuRegFragment extends Fragment {
         });
 
 
+
+    }
+
+    private void finish() {
+        finish();
+        startActivity(new Intent(getActivity(),MainActivityStudent.class));
 
     }
 

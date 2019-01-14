@@ -6,8 +6,12 @@ public class Appointment {
 
     @SerializedName("student_id")
     private int Student_id;
+    @SerializedName("teacher_id")
+    private int Teacher_id;
     @SerializedName("name")
     private String StudentName;
+    @SerializedName("teacher_name")
+    private String TeacherName;
     @SerializedName("reg")
     private String Reg;
     @SerializedName("department")
@@ -28,6 +32,22 @@ public class Appointment {
     private String Date;
     @SerializedName("time")
     private String Time;
+
+    public String getTeacherName() {
+        return TeacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        TeacherName = teacherName;
+    }
+
+    public int getTeacher_id() {
+        return Teacher_id;
+    }
+
+    public void setTeacher_id(int teacher_id) {
+        Teacher_id = teacher_id;
+    }
 
     public int getStudent_id() {
         return Student_id;
