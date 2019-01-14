@@ -4,6 +4,7 @@ import java.util.List;
 
 import becker.andy.map2018.models.Appointment;
 import becker.andy.map2018.models.Requests;
+import becker.andy.map2018.models.Teacher;
 import becker.andy.map2018.models.User;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -17,6 +18,9 @@ public interface ApiInterface {
     Call<User> setAppointment(@Query("teacher_id") int teacher_id,@Query("student_id") int student_id,
                               @Query("subject") String subject,@Query("description") String description,
                               @Query("message") String message,@Query("date") String date, @Query("time") String time);
+    @GET("request_appointment.php")
+    Call<User> requestAppointment(@Query("teacher_id") int teacher_id,@Query("student_id") int student_id,
+                              @Query("subject") String subject,@Query("description") String description);
 
     @GET ("register_stu.php")
     Call<User> performRegisterStudent (@Query("email") String email,@Query("password") String password,@Query("name") String name,
@@ -28,8 +32,14 @@ public interface ApiInterface {
     @GET("get_requests.php")
     Call<List<Requests>> getRequests(@Query("user_id") int user_id);
 
+    @GET("get_teachers.php")
+    Call<List<Teacher>> getTeachers(@Query("institution") String institution);
+
     @GET("get_appointments.php")
     Call<List<Appointment>> getAppointments(@Query("user_id") int user_id);
+
+    @GET("get_appointments_student.php")
+    Call<List<Appointment>> getAppointmentsStudent(@Query("user_id") int user_id);
 
     @GET("delete_appointment.php")
     Call<User> deleteAppointment(@Query("teacher_id") int teacher_id,@Query("student_id") int student_id);

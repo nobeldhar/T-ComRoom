@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_places_student"
+        android:icon="@drawable/place_black_24dp"
+        android:title="@string/nav_places" />
+    <item
+        android:id="@+id/nav_teacher"
+        android:icon="@drawable/teacher_black_24dp"
+        android:title="@string/nav_teachers" />
+    <item
+        android:id="@+id/nav_appointments_student"
+        android:icon="@drawable/notifications_none_black_24dp"
+        android:title="Appointments"/>
+</menu>

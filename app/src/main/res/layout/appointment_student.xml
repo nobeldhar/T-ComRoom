@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="5dp"
-    android:id="@+id/appointment_model"
+    android:id="@+id/appointment_student_model"
     app:cardElevation="10dp"
     app:cardCornerRadius="4dp"
     android:layout_height="wrap_content">
@@ -40,7 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
-                    android:id="@+id/appointment_name"
+                    android:id="@+id/appointment_student_name"
                     android:textColor="@android:color/black"
                     android:textStyle="bold"
                     android:textSize="15dp"
@@ -66,7 +66,7 @@
             <TextView
                 android:layout_toEndOf="@+id/qwe"
 
-                android:id="@+id/appointment_institute"
+                android:id="@+id/appointment_student_institute"
                 android:textColor="@android:color/black"
                 android:textStyle="normal"
                 android:textSize="15dp"
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/dept"
-                android:layout_toEndOf="@+id/appointment_institute"
+                android:layout_toEndOf="@+id/appointment_student_institute"
 
                 android:text=" Dept: "
                 android:textColor="@android:color/black"
@@ -84,24 +84,7 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:layout_toEndOf="@+id/dept"
-                android:id="@+id/appointment_dept"
-                android:textColor="@android:color/black"
-                android:textStyle="normal"
-                android:textSize="15dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/ys"
-                android:layout_toEndOf="@+id/appointment_dept"
-                android:text=" Y/S: "
-                android:textColor="@android:color/black"
-                android:textStyle="normal"
-                android:textSize="15dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_toEndOf="@+id/ys"
-                android:id="@+id/appointment_ys"
+                android:id="@+id/appointment_student_dept"
                 android:textColor="@android:color/black"
                 android:textStyle="normal"
                 android:textSize="15dp"
@@ -126,7 +109,7 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:layout_toEndOf="@+id/qw"
-                android:id="@+id/appointment_sub"
+                android:id="@+id/appointment_student_sub"
                 android:textColor="@android:color/black"
                 android:textStyle="normal"
                 android:textSize="15dp"

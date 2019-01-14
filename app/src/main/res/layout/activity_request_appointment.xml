@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SetAppointmentActivity">
+    tools:context=".RequestAppointmentActivity">
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
@@ -21,7 +21,8 @@
                 app:cardElevation="5dp"
                 android:layout_height="match_parent">
                 <LinearLayout
-                    android:padding="10dp"
+                    android:background="@drawable/request"
+                    android:layout_margin="10dp"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -30,7 +31,7 @@
                         android:gravity="center"
                         android:textColor="@android:color/white"
                         android:background="@color/colorPrimaryDark"
-                        android:text="Appointment Request"
+                        android:text="Request Appointment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                     <ImageView
@@ -40,7 +41,7 @@
                         android:layout_width="80dp"
                         android:layout_height="80dp" />
                     <TextView
-                        android:id="@+id/student_name"
+                        android:id="@+id/appointment_request_name"
                         android:text="Nobel"
                         android:textColor="@android:color/black"
                         android:gravity="center"
@@ -48,39 +49,9 @@
                         android:textStyle="bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
+
                     <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                        <TextView
-                            android:text="Reg. No. : "
-                            android:textSize="15dp"
-                            android:textColor="@android:color/black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                        <TextView
-                            android:id="@+id/student_reg"
-                            android:textSize="15dp"
-                            android:textColor="@android:color/black"
-                            android:layout_width="100dp"
-                            android:gravity="center_horizontal"
-                            android:layout_height="wrap_content" />
-                        <TextView
-                            android:text="Semester/year : "
-                            android:textSize="15dp"
-                            android:layout_marginLeft="5dp"
-                            android:textColor="@android:color/black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                        <TextView
-                            android:gravity="center_horizontal"
-                            android:id="@+id/student_ys"
-                            android:textSize="15dp"
-                            android:textColor="@android:color/black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-                    <LinearLayout
+                        android:padding="10dp"
                         android:layout_marginTop="5dp"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
@@ -92,12 +63,19 @@
                             android:textColor="@android:color/black"
                             android:layout_height="wrap_content" />
                         <TextView
-                            android:id="@+id/student_dept"
+                            android:id="@+id/appointment_request_dept"
                             android:textSize="15dp"
                             android:gravity="center_horizontal"
                             android:layout_width="75dp"
                             android:textColor="@android:color/black"
                             android:layout_height="wrap_content" />
+                    </LinearLayout>
+                        <LinearLayout
+                            android:padding="5dp"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
                         <TextView
                             android:text="Institution : "
                             android:textSize="15dp"
@@ -106,7 +84,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                         <TextView
-                            android:id="@+id/student_insti"
+                            android:id="@+id/appointment_request_insti"
                             android:textSize="15dp"
                             android:gravity="center_horizontal"
                             android:layout_width="wrap_content"
@@ -114,98 +92,48 @@
                             android:layout_height="wrap_content" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_marginTop="20dp"
+                    <RelativeLayout
+                        android:padding="10dp"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <TextView
+                            android:id="@+id/wq"
                             android:text="Subject : "
                             android:textSize="15dp"
                             android:textColor="@android:color/black"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
-                        <TextView
-                            android:id="@+id/student_subject"
+                        <EditText
+                            android:layout_toEndOf="@+id/wq"
+                            android:id="@+id/appointment_request_subject"
                             android:textSize="15dp"
                             android:textColor="@android:color/black"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_marginTop="10dp"
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:padding="10dp"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <TextView
+                            android:id="@+id/we"
                             android:text="Description : "
                             android:textSize="15dp"
                             android:textColor="@android:color/black"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
-                        <TextView
-                            android:id="@+id/student_description"
-                            android:textSize="15dp"
-                            android:layout_width="wrap_content"
-                            android:textColor="@android:color/black"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:text="Message : "
-                            android:textSize="15dp"
-                            android:textColor="@android:color/black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
                         <EditText
-                            android:id="@+id/student_message"
+                            android:layout_toEndOf="@+id/we"
+                            android:id="@+id/appointment_request_description"
                             android:textSize="15dp"
-                            android:inputType="text|textMultiLine"
-                            android:maxLength="200"
                             android:layout_width="match_parent"
                             android:textColor="@android:color/black"
                             android:layout_height="wrap_content" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:text="Date : "
-                            android:textSize="15dp"
-                            android:textColor="@android:color/black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                        <EditText
-                            android:id="@+id/student_date"
-                            android:textSize="15dp"
-                            android:inputType="text|textMultiLine"
-                            android:maxLength="21"
-                            android:layout_width="100dp"
-                            android:textColor="@android:color/black"
-                            android:layout_height="wrap_content" />
-                        <TextView
-                            android:layout_marginLeft="5dp"
-                            android:text="Time : "
-                            android:textSize="15dp"
-                            android:textColor="@android:color/black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                        <EditText
-                            android:id="@+id/student_time"
-                            android:textSize="15dp"
-                            android:inputType="text|textMultiLine"
-                            android:maxLength="21"
-                            android:layout_width="100dp"
-                            android:textColor="@android:color/black"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
+                    </RelativeLayout>
+
 
                 </LinearLayout>
 
@@ -215,9 +143,9 @@
                 android:layout_marginBottom="30dp"
                 android:layout_centerHorizontal="true"
                 android:elevation="3dp"
-                android:id="@+id/btn_set_appointment"
+                android:id="@+id/btn_appointment_request"
                 android:textColor="@android:color/white"
-                android:text="set appointmetn"
+                android:text="Request appointmetn"
                 android:background="@drawable/login_btn"
                 android:layout_marginTop="40dp"
                 android:layout_gravity="center"
@@ -238,17 +166,13 @@
         android:layout_height="wrap_content">
 
         <ProgressBar
-            android:id="@+id/progressBarAppointmetn"
+            android:id="@+id/progressBar_request"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="15dp"
             android:indeterminate="true"
             android:visibility="invisible" />
     </RelativeLayout>
-
-
-
-
 
 
 </RelativeLayout>

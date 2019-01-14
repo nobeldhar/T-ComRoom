@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -33,7 +33,7 @@
             android:required="false" />
 
         <activity android:name=".SetAppointmentActivity" />
-        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,7 +41,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ShowAppointmentActivity"></activity>
+        <activity android:name=".ShowAppointmentActivity" />
+        <activity android:name=".MainActivityStudent" />
+        <activity android:name=".RequestAppointmentActivity" />
+        <activity android:name=".ShowAppiontmentStudent"></activity>
     </application>
 
 </manifest>

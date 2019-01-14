@@ -47,9 +47,14 @@ public class LoginActivity extends AppCompatActivity {
 
         prefConfig=new PrefConfig(this);
         apiInterface=ApiClient.getApiClient().create(ApiInterface.class);
-        if(prefConfig.readLoginStatus()){
+        if(prefConfig.readLoginStatus() && prefConfig.readUser().equals("Teacher")){
+            finish();
             startActivity(new Intent(this,MainActivity.class));
+        }else if(prefConfig.readLoginStatus()){
+            finish();
+            startActivity(new Intent(this,MainActivityStudent.class));
         }
+
 
         blurImageView=findViewById(R.id.bookBlurImageViewLogin);
         blurImageView.setBlur(2);
@@ -100,7 +105,14 @@ public class LoginActivity extends AppCompatActivity {
                         LoginActivity.prefConfig.writeEmail(response.body().getEmail());
                         LoginActivity.prefConfig.writeUser(response.body().getUser());
                         LoginActivity.prefConfig.writeInsti(response.body().getInstitution());
-                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                        if(response.body().getUser().equals("Teacher")){
+                            finish();
+                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                        }else {
+                            finish();
+                            startActivity(new Intent(LoginActivity.this,MainActivityStudent.class));
+                        }
+
                     }if(response.body().getResponse().equals("failed")){
 
                         Toast.makeText(LoginActivity.this,"Email and password incorrect",Toast.LENGTH_LONG).show();

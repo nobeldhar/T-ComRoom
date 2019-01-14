@@ -117,6 +117,7 @@ public class SetAppointmentActivity extends AppCompatActivity {
                 if(response.body().getResponse().equals("ok")){
                     mProgressBar.setVisibility(View.GONE);
                     Toast.makeText(SetAppointmentActivity.this,"Appointment has been set!",Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(SetAppointmentActivity.this,MainActivity.class));
                 }else if(response.body().getResponse().equals("erro")){
                     mProgressBar.setVisibility(View.GONE);
                     Toast.makeText(SetAppointmentActivity.this,"Appointment has been set but request hasn't been deleted!",Toast.LENGTH_LONG).show();

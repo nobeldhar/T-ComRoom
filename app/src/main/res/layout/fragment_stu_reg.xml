@@ -217,7 +217,7 @@
             android:layout_marginBottom="20dp"
             android:layout_width="200dp"
             android:background="@drawable/login_btn"
-            android:text="login"
+            android:text="Register"
             android:elevation="3dp"
             android:textColor="@android:color/white"
             android:layout_below="@+id/asdf"
