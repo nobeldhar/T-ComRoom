@@ -20,12 +20,14 @@ public class RegChooseFragment extends Fragment {
     private TextView mStuReg;
     private TextView mTeachReg;
 
-    public interface PerformRegFragmentListener{
+    public interface PerformRegFragmentListener {
         public void performStuReg();
+
         public void performTeachReg();
     }
 
     private PerformRegFragmentListener performRegFragmentListener;
+
     public RegChooseFragment() {
         // Required empty public constructor
     }
@@ -36,10 +38,10 @@ public class RegChooseFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_reg_choose, container, false);
+        View view = inflater.inflate(R.layout.fragment_reg_choose, container, false);
 
-        mStuReg=view.findViewById(R.id.stu_reg);
-        mTeachReg=view.findViewById(R.id.teach_reg);
+        mStuReg = view.findViewById(R.id.stu_reg);
+        mTeachReg = view.findViewById(R.id.teach_reg);
 
         mStuReg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,14 +57,13 @@ public class RegChooseFragment extends Fragment {
         });
 
 
-
         return view;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Activity activity= (Activity) context;
-        performRegFragmentListener= (PerformRegFragmentListener) activity;
+        Activity activity = (Activity) context;
+        performRegFragmentListener = (PerformRegFragmentListener) activity;
     }
 }

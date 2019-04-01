@@ -30,7 +30,7 @@ public class TeacherAdapter extends RecyclerView.Adapter<TeacherAdapter.MyViewHo
     @NonNull
     @Override
     public TeacherAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view=LayoutInflater.from(context).inflate(R.layout.teacher,viewGroup,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.teacher, viewGroup, false);
         return new TeacherAdapter.MyViewHolder(view);
     }
 
@@ -43,9 +43,9 @@ public class TeacherAdapter extends RecyclerView.Adapter<TeacherAdapter.MyViewHo
         myViewHolder.set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserLocationStudent u= mUserlocations.get(i);
-                Intent intent=new Intent(context,RequestAppointmentActivity.class);
-                intent.putExtra(context.getString(R.string.teacher_id_intent_extra),u.getTeacher().getTeacher_id());
+                UserLocationStudent u = mUserlocations.get(i);
+                Intent intent = new Intent(context, RequestAppointmentActivity.class);
+                intent.putExtra(context.getString(R.string.teacher_id_intent_extra), u.getTeacher().getTeacher_id());
                 context.startActivity(intent);
             }
         });
@@ -66,10 +66,10 @@ public class TeacherAdapter extends RecyclerView.Adapter<TeacherAdapter.MyViewHo
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            name=itemView.findViewById(R.id.teacher_name);
-            institute=itemView.findViewById(R.id.teacher_institute);
-            dept=itemView.findViewById(R.id.teacher_dept);
-            set=itemView.findViewById(R.id.teacher_Set_appointment);
+            name = itemView.findViewById(R.id.teacher_name);
+            institute = itemView.findViewById(R.id.teacher_institute);
+            dept = itemView.findViewById(R.id.teacher_dept);
+            set = itemView.findViewById(R.id.teacher_Set_appointment);
 
         }
     }

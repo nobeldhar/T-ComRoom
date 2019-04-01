@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
@@ -53,7 +54,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivityStudent extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class MainActivityStudent extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9001;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9002;
@@ -61,8 +62,8 @@ public class MainActivityStudent extends AppCompatActivity implements SwipeRefre
     private static final int ERROR_DIALOG_REQUEST = 9003;
     private boolean mLocationPermissionGranted = false;
 
-    private ArrayList<Teacher> mTeachers=new ArrayList<>();
-    private ArrayList<UserLocationStudent>mUserLocations=new ArrayList<>();
+    private ArrayList<Teacher> mTeachers = new ArrayList<>();
+    private ArrayList<UserLocationStudent> mUserLocations = new ArrayList<>();
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
     FirebaseFirestore mDb;
@@ -87,15 +88,16 @@ public class MainActivityStudent extends AppCompatActivity implements SwipeRefre
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_student);
-        msavedInstanceState=savedInstanceState;
+        msavedInstanceState = savedInstanceState;
         mDb = FirebaseFirestore.getInstance();
-        mMainNav=findViewById(R.id.main_nav_student);
-        mToolbar=findViewById(R.id.student_main_toolbar);
+        mMainNav = findViewById(R.id.main_nav_student);
+        mToolbar = findViewById(R.id.student_main_toolbar);
+        mToolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(mToolbar);
-        mFragmentContainer=findViewById(R.id.fragment_container_student);
-        mMainProgressBar=findViewById(R.id.main_progressBar_student);
+        mFragmentContainer = findViewById(R.id.fragment_container_student);
+        mMainProgressBar = findViewById(R.id.main_progressBar_student);
         mMainProgressBar.setVisibility(View.VISIBLE);
-        mSwipeRefreshLayout=findViewById(R.id.swiprefresh_student);
+        mSwipeRefreshLayout = findViewById(R.id.swiprefresh_student);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -108,13 +110,10 @@ public class MainActivityStudent extends AppCompatActivity implements SwipeRefre
         });
 
 
-
-
-
         mMainNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.nav_places_student:
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.fragment_container_student, mapFragmentStudent).commit();
@@ -134,19 +133,20 @@ public class MainActivityStudent extends AppCompatActivity implements SwipeRefre
         });
 
     }
+
     private synchronized void init(Bundle savedInstanceState) {
 
         mapFragmentStudent = new MapFragmentStudent();
-        Bundle bundle=new Bundle();
-        bundle.putParcelableArrayList(getString(R.string.userlocations_array),  mUserLocations);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(getString(R.string.userlocations_array), mUserLocations);
         mapFragmentStudent.setArguments(bundle);
 
-        teachersFragment=new TeachersFragment();
-        Bundle bundle2=new Bundle();
-        bundle2.putParcelableArrayList(getString(R.string.userlocations_array),  mUserLocations);
+        teachersFragment = new TeachersFragment();
+        Bundle bundle2 = new Bundle();
+        bundle2.putParcelableArrayList(getString(R.string.userlocations_array), mUserLocations);
         teachersFragment.setArguments(bundle2);
 
-        appointmentFragmentStudent=new AppointmentFragmentStudent();
+        appointmentFragmentStudent = new AppointmentFragmentStudent();
 
         mMainProgressBar.setVisibility(View.GONE);
         mSwipeRefreshLayout.setRefreshing(false);
@@ -160,51 +160,46 @@ public class MainActivityStudent extends AppCompatActivity implements SwipeRefre
                 .add(R.id.fragment_container_student, mapFragmentStudent).commit();
 
 
-
-
-
-
-
     }
 
     private synchronized void initUser(final Bundle savedInstanceState) {
 
-        String insti=LoginActivity.prefConfig.readInsti();
+        String insti = LoginActivity.prefConfig.readInsti();
 
-        Call<List<Teacher>> call=LoginActivity.apiInterface.getTeachers(insti);
+        Call<List<Teacher>> call = LoginActivity.apiInterface.getTeachers(insti);
 
         call.enqueue(new Callback<List<Teacher>>() {
             @Override
             public void onResponse(Call<List<Teacher>> call, Response<List<Teacher>> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     mTeachers = (ArrayList<Teacher>) response.body();
-                    mUserLocations=new ArrayList<>();
-                    if(mTeachers.size()>0){
-                        for(int i = 0; i< mTeachers.size(); i++){
-                            synchronized (this){
-                                DocumentReference locationRef=mDb.collection(getString(R.string.userLocations_teachers))
-                                        .document(Integer.toString( mTeachers.get(i).getTeacher_id()));
+                    mUserLocations = new ArrayList<>();
+                    if (mTeachers.size() > 0) {
+                        for (int i = 0; i < mTeachers.size(); i++) {
+                            synchronized (this) {
+                                DocumentReference locationRef = mDb.collection(getString(R.string.userLocations_teachers))
+                                        .document(Integer.toString(mTeachers.get(i).getTeacher_id()));
                                 final int finalI = i;
                                 final int finalI1 = i;
                                 locationRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        if(task.isSuccessful()){
-                                            if(task.getResult()!= null){
+                                        if (task.isSuccessful()) {
+                                            if (task.getResult() != null) {
                                                 Log.d(TAG, "Location onComplete: ");
-                                                UserLocationStudent userLocation=task.getResult().toObject(UserLocationStudent.class);
-                                                UserLocationStudent u=new UserLocationStudent();
+                                                UserLocationStudent userLocation = task.getResult().toObject(UserLocationStudent.class);
+                                                UserLocationStudent u = new UserLocationStudent();
                                                 u.setTeacher(mTeachers.get(finalI1));
                                                 u.setGeo_point(userLocation.getGeo_point());
                                                 mUserLocations.add(u);
                                                 Log.d(TAG, "initUser: in user array");
-                                                if(finalI == mTeachers.size()-1){
+                                                if (finalI == mTeachers.size() - 1) {
                                                     //notify();
                                                     init(savedInstanceState);
 
                                                 }
 
-                                            }else {
+                                            } else {
                                                 Log.d(TAG, "onComplete: result is empty");
                                             }
                                         }
@@ -212,14 +207,14 @@ public class MainActivityStudent extends AppCompatActivity implements SwipeRefre
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(MainActivityStudent.this,e.getMessage().toString(),Toast.LENGTH_LONG).show();
+                                        Toast.makeText(MainActivityStudent.this, e.getMessage().toString(), Toast.LENGTH_LONG).show();
                                     }
                                 });
 
                             }
 
                         }
-                    }else {
+                    } else {
                         init(savedInstanceState);
 
                     }
@@ -229,34 +224,27 @@ public class MainActivityStudent extends AppCompatActivity implements SwipeRefre
 
             @Override
             public void onFailure(Call<List<Teacher>> call, Throwable t) {
-                    Toast.makeText(MainActivityStudent.this,"Database Error: "+t.getMessage(),Toast.LENGTH_LONG).show();
-                    init(savedInstanceState);
+                Toast.makeText(MainActivityStudent.this, "Database Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                init(savedInstanceState);
             }
         });
-
-
 
 
     }
 
 
+    private void saveUserLocation(final UserLocation mUserLocation) {
+        if (mUserLocation != null) {
 
-
-
-
-
-    private void saveUserLocation(final UserLocation mUserLocation){
-        if(mUserLocation != null){
-
-            DocumentReference locationRef=mDb.collection(getString(R.string.collection_user_location_student))
+            DocumentReference locationRef = mDb.collection(getString(R.string.collection_user_location_student))
                     .document(Integer.toString(LoginActivity.prefConfig.readUserId()));
             locationRef.set(mUserLocation).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    if(task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         Log.d(TAG, "saveUserLocation:\ninserted user location into database" +
-                                "\n latitude: "+mUserLocation.getGeo_point().getLatitude() +
-                                "\n longitude: "+mUserLocation.getGeo_point().getLongitude());
+                                "\n latitude: " + mUserLocation.getGeo_point().getLatitude() +
+                                "\n longitude: " + mUserLocation.getGeo_point().getLongitude());
 
                     }
                 }
@@ -265,7 +253,7 @@ public class MainActivityStudent extends AppCompatActivity implements SwipeRefre
         }
     }
 
-    private void getLastKnownLocation( final UserLocation UserLocation) {
+    private void getLastKnownLocation(final UserLocation UserLocation) {
         Log.d(TAG, "getLastKnownLocation: ");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "getLastKnownLocation: inside");
@@ -277,7 +265,7 @@ public class MainActivityStudent extends AppCompatActivity implements SwipeRefre
                     @Override
                     public void onComplete(@NonNull Task<Location> task) {
                         Log.d(TAG, "onComplete: inside");
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             if (task.getResult() != null) {
 
 
@@ -288,11 +276,10 @@ public class MainActivityStudent extends AppCompatActivity implements SwipeRefre
                                 UserLocation.setTimestamp(null);
                                 saveUserLocation(UserLocation);
                                 Log.d(TAG, "onComplete: eeee");
-                            }
-                            else {
+                            } else {
                                 Log.d(TAG, "onComplete: task is null");
                             }
-                        }else {
+                        } else {
                             Log.d(TAG, "onComplete: task fail");
                         }
 
@@ -300,29 +287,22 @@ public class MainActivityStudent extends AppCompatActivity implements SwipeRefre
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "onFailure: "+e.getMessage().toString());
+                Log.d(TAG, "onFailure: " + e.getMessage().toString());
             }
         });
         Log.d(TAG, "getLastKnownLocation: last");
     }
 
 
-
-
-
-
-
-
-
     @Override
     protected void onResume() {
         super.onResume();
 
-        if(checkMapServices()){
-            if(mLocationPermissionGranted){
+        if (checkMapServices()) {
+            if (mLocationPermissionGranted) {
                 Log.d(TAG, "onResume: ");
 
-            }else{
+            } else {
 
                 getLocationPermission();
 
@@ -330,9 +310,9 @@ public class MainActivityStudent extends AppCompatActivity implements SwipeRefre
         }
     }
 
-    private boolean checkMapServices(){
-        if(isServicesOK()){
-            if(isMapsEnabled()){
+    private boolean checkMapServices() {
+        if (isServicesOK()) {
+            if (isMapsEnabled()) {
                 return true;
             }
         }
@@ -353,10 +333,10 @@ public class MainActivityStudent extends AppCompatActivity implements SwipeRefre
         alert.show();
     }
 
-    public boolean isMapsEnabled(){
-        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+    public boolean isMapsEnabled() {
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             buildAlertMessageNoGps();
             return false;
         }
@@ -381,22 +361,21 @@ public class MainActivityStudent extends AppCompatActivity implements SwipeRefre
         }
     }
 
-    public boolean isServicesOK(){
+    public boolean isServicesOK() {
         Log.d(TAG, "isServicesOK: checking google services version");
 
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(MainActivityStudent.this);
 
-        if(available == ConnectionResult.SUCCESS){
+        if (available == ConnectionResult.SUCCESS) {
             //everything is fine and the user can make map requests
             Log.d(TAG, "isServicesOK: Google Play Services is working");
             return true;
-        }
-        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
             //an error occured but we can resolve it
             Log.d(TAG, "isServicesOK: an error occured but we can fix it");
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(MainActivityStudent.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
-        }else{
+        } else {
             Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
         }
         return false;
@@ -425,10 +404,9 @@ public class MainActivityStudent extends AppCompatActivity implements SwipeRefre
         Log.d(TAG, "onActivityResult: called.");
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ENABLE_GPS: {
-                if(mLocationPermissionGranted){
+                if (mLocationPermissionGranted) {
 
-                }
-                else{
+                } else {
                     getLocationPermission();
                 }
             }
@@ -444,13 +422,13 @@ public class MainActivityStudent extends AppCompatActivity implements SwipeRefre
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.student_activity_toolbar,menu);
+        getMenuInflater().inflate(R.menu.student_activity_toolbar, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.student_logout:
                 LoginActivity.prefConfig.writeUser("none");
                 LoginActivity.prefConfig.writeInsti("none");
@@ -458,10 +436,10 @@ public class MainActivityStudent extends AppCompatActivity implements SwipeRefre
                 LoginActivity.prefConfig.writeLoginStatus(false);
                 LoginActivity.prefConfig.writeUserId(0);
                 finish();
-                startActivity(new Intent(MainActivityStudent.this,LoginActivity.class));
-                return  true;
-                default:
-                    return true;
+                startActivity(new Intent(MainActivityStudent.this, LoginActivity.class));
+                return true;
+            default:
+                return true;
 
         }
     }

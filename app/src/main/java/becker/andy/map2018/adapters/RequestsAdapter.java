@@ -30,7 +30,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view=LayoutInflater.from(context).inflate(R.layout.request,viewGroup,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.request, viewGroup, false);
         return new MyViewHolder(view);
     }
 
@@ -45,9 +45,9 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
         myViewHolder.set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserLocation u= mUserlocations.get(i);
-                Intent intent=new Intent(context,SetAppointmentActivity.class);
-                intent.putExtra(context.getString(R.string.studentId_intent_extra),u.getRequests().getStudent_id());
+                UserLocation u = mUserlocations.get(i);
+                Intent intent = new Intent(context, SetAppointmentActivity.class);
+                intent.putExtra(context.getString(R.string.studentId_intent_extra), u.getRequests().getStudent_id());
                 context.startActivity(intent);
             }
         });
@@ -67,15 +67,16 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
         TextView sub;
         Button set;
         Button delete;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            name=itemView.findViewById(R.id.request_name);
-            institute=itemView.findViewById(R.id.request_institute);
-            dept=itemView.findViewById(R.id.request_dept);
-            y_s=itemView.findViewById(R.id.request_ys);
-            sub=itemView.findViewById(R.id.request_sub);
-            set=itemView.findViewById(R.id.request_Set_appointment);
-            delete=itemView.findViewById(R.id.request_delete);
+            name = itemView.findViewById(R.id.request_name);
+            institute = itemView.findViewById(R.id.request_institute);
+            dept = itemView.findViewById(R.id.request_dept);
+            y_s = itemView.findViewById(R.id.request_ys);
+            sub = itemView.findViewById(R.id.request_sub);
+            set = itemView.findViewById(R.id.request_Set_appointment);
+            delete = itemView.findViewById(R.id.request_delete);
         }
     }
 }

@@ -40,7 +40,7 @@ import becker.andy.map2018.models.UserLocationStudent;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MapFragmentStudent extends Fragment implements OnMapReadyCallback  {
+public class MapFragmentStudent extends Fragment implements OnMapReadyCallback {
 
     private static final String TAG = MapFragmentStudent.class.getSimpleName();
 
@@ -65,19 +65,20 @@ public class MapFragmentStudent extends Fragment implements OnMapReadyCallback  
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_map_fragment_student, container, false);
+        View view = inflater.inflate(R.layout.fragment_map_fragment_student, container, false);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map_student);
         mapFragment.getMapAsync(this);
-        mUserLocations=getArguments().getParcelableArrayList(getString(R.string.userlocations_array));
-        mDb=FirebaseFirestore.getInstance();
+        mUserLocations = getArguments().getParcelableArrayList(getString(R.string.userlocations_array));
+        mDb = FirebaseFirestore.getInstance();
 
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
         getLastKnownLocation();
 
         return view;
     }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
@@ -91,10 +92,10 @@ public class MapFragmentStudent extends Fragment implements OnMapReadyCallback  
         mGoogleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
             @Override
             public void onMarkerDragStart(Marker marker) {
-                for(UserLocationStudent u: mUserLocations){
-                    if(u.getTeacher().getTeacherName().equals(marker.getTitle())){
+                for (UserLocationStudent u : mUserLocations) {
+                    if (u.getTeacher().getTeacherName().equals(marker.getTitle())) {
                         //marker.setVisible(false);
-                        Log.d(TAG, "onMarkerDragStart: "+u.getTeacher().getTeacherName());
+                        Log.d(TAG, "onMarkerDragStart: " + u.getTeacher().getTeacherName());
 //                        Intent intent=new Intent(getActivity(),SetAppointmentActivity.class);
 //                        intent.putExtra(getString(R.string.studentId_intent_extra),u.getRequests().getStudent_id());
 //                        startActivity(intent);
@@ -115,8 +116,6 @@ public class MapFragmentStudent extends Fragment implements OnMapReadyCallback  
     }
 
 
-
-
     private void getLastKnownLocation() {
         Log.d(TAG, "getLastKnownLocation: ");
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -129,22 +128,21 @@ public class MapFragmentStudent extends Fragment implements OnMapReadyCallback  
                     @Override
                     public void onComplete(@NonNull Task<Location> task) {
                         Log.d(TAG, "onComplete: inside");
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             if (task.getResult() != null) {
                                 GeoPoint geoPoint = new GeoPoint(task.getResult().getLatitude(), task.getResult().getLongitude());
                                 Log.d(TAG, "onComplete: latitude " + geoPoint.getLatitude());
                                 Log.d(TAG, "onComplete: longitude " + geoPoint.getLongitude());
-                                mUserPosition=new UserLocation();
+                                mUserPosition = new UserLocation();
                                 mUserPosition.setGeo_point(geoPoint);
                                 mUserPosition.setTimestamp(null);
                                 setCameraView();
                                 //saveUserLocation(user,mUserLocation);
                                 Log.d(TAG, "onComplete: eeee");
-                            }
-                            else {
+                            } else {
                                 Log.d(TAG, "onComplete: task is null");
                             }
-                        }else {
+                        } else {
                             Log.d(TAG, "onComplete: task fail");
                         }
 
@@ -152,31 +150,31 @@ public class MapFragmentStudent extends Fragment implements OnMapReadyCallback  
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "onFailure: "+e.getMessage().toString());
+                Log.d(TAG, "onFailure: " + e.getMessage().toString());
             }
         });
         Log.d(TAG, "getLastKnownLocation: last");
     }
 
 
-    private void setCameraView(){
-        if(mUserPosition!= null){
+    private void setCameraView() {
+        if (mUserPosition != null) {
             Log.d(TAG, "setCameraView: user position got");
-            double bottomboundary=mUserPosition.getGeo_point().getLatitude()-.005;
-            double leftboundary = mUserPosition.getGeo_point().getLongitude()-.005;
-            double upboundary = mUserPosition.getGeo_point().getLatitude()+.005;
-            double rightboundary = mUserPosition.getGeo_point().getLongitude()+.005;
-            latLngBoundary=new LatLngBounds(new LatLng(bottomboundary,leftboundary),
-                    new LatLng(upboundary,rightboundary));
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBoundary,0));
+            double bottomboundary = mUserPosition.getGeo_point().getLatitude() - .005;
+            double leftboundary = mUserPosition.getGeo_point().getLongitude() - .005;
+            double upboundary = mUserPosition.getGeo_point().getLatitude() + .005;
+            double rightboundary = mUserPosition.getGeo_point().getLongitude() + .005;
+            latLngBoundary = new LatLngBounds(new LatLng(bottomboundary, leftboundary),
+                    new LatLng(upboundary, rightboundary));
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBoundary, 0));
 
-        }else {
+        } else {
             Log.d(TAG, "setCameraView: user position is null");
         }
 
-        if(mGoogleMap != null){
-            if(mUserLocations.size()>0){
-                for(UserLocationStudent userLocation: mUserLocations){
+        if (mGoogleMap != null) {
+            if (mUserLocations.size() > 0) {
+                for (UserLocationStudent userLocation : mUserLocations) {
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.title(userLocation.getTeacher().getTeacherName());
                     Log.d(TAG, "onComplete: " + userLocation.getTeacher().getTeacherName());
@@ -187,16 +185,13 @@ public class MapFragmentStudent extends Fragment implements OnMapReadyCallback  
                     markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                     mGoogleMap.addMarker(markerOptions);
                 }
-            }else {
+            } else {
                 Log.d(TAG, "setCameraView: marker size zero");
             }
-        }else {
+        } else {
             Log.d(TAG, "setCameraView: map is null");
         }
     }
-
-
-
 
 
 }

@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Parcelable;
@@ -70,7 +71,6 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
 
-
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     private static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9001;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9002;
@@ -78,23 +78,23 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private static final int ERROR_DIALOG_REQUEST = 9003;
     private boolean mLocationPermissionGranted = false;
 
-    private ArrayList<Requests>mRequestsList=new ArrayList<>();
-    private ArrayList<UserLocation>mUserLocations=new ArrayList<>();
+    private ArrayList<Requests> mRequestsList = new ArrayList<>();
+    private ArrayList<UserLocation> mUserLocations = new ArrayList<>();
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
     FirebaseFirestore mDb;
 
     private GoogleMap mGoogleMap;
-    private UserLocation mUserPosition=null;
+    private UserLocation mUserPosition = null;
     private LatLngBounds latLngBoundary;
 
     private BottomNavigationView mMainNav;
     private FrameLayout mFragmentContainer;
 
     //fragments
-    public MapFragment mapFragment=new MapFragment();
-    public RequestsFragment requestsFragment=new RequestsFragment();
-    public AppointmentsFragment appointmentsFragment=new AppointmentsFragment();
+    public MapFragment mapFragment = new MapFragment();
+    public RequestsFragment requestsFragment = new RequestsFragment();
+    public AppointmentsFragment appointmentsFragment = new AppointmentsFragment();
     //widgets
     private ProgressBar mMainProgressBar;
     //refresh
@@ -108,16 +108,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mToolbar=findViewById(R.id.teacher_main_toolbar);
+        mToolbar = findViewById(R.id.teacher_main_toolbar);
+        mToolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(mToolbar);
-        msavedInstanceState=savedInstanceState;
+        msavedInstanceState = savedInstanceState;
         mDb = FirebaseFirestore.getInstance();
-        mMainNav=findViewById(R.id.main_nav);
-        mToolbar=findViewById(R.id.teacher_main_toolbar);
-        mFragmentContainer=findViewById(R.id.fragment_container);
-        mMainProgressBar=findViewById(R.id.main_progressBar);
+        mMainNav = findViewById(R.id.main_nav);
+        mToolbar = findViewById(R.id.teacher_main_toolbar);
+        mFragmentContainer = findViewById(R.id.fragment_container);
+        mMainProgressBar = findViewById(R.id.main_progressBar);
         mMainProgressBar.setVisibility(View.VISIBLE);
-        mSwipeRefreshLayout=findViewById(R.id.teacherRefreshLayout);
+        mSwipeRefreshLayout = findViewById(R.id.teacherRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
 
@@ -131,13 +132,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
 
 
-
-
-
         mMainNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.nav_places:
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.fragment_container, mapFragment).commit();
@@ -161,16 +159,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private synchronized void init(Bundle savedInstanceState) {
 
         mapFragment = new MapFragment();
-        Bundle bundle=new Bundle();
-        bundle.putParcelableArrayList(getString(R.string.userlocations_array),  mUserLocations);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(getString(R.string.userlocations_array), mUserLocations);
         mapFragment.setArguments(bundle);
 
-        requestsFragment=new RequestsFragment();
-        Bundle bundle2=new Bundle();
-        bundle2.putParcelableArrayList(getString(R.string.userlocations_array),  mUserLocations);
+        requestsFragment = new RequestsFragment();
+        Bundle bundle2 = new Bundle();
+        bundle2.putParcelableArrayList(getString(R.string.userlocations_array), mUserLocations);
         requestsFragment.setArguments(bundle2);
 
-        appointmentsFragment=new AppointmentsFragment();
+        appointmentsFragment = new AppointmentsFragment();
 
         mMainProgressBar.setVisibility(View.GONE);
         mSwipeRefreshLayout.setRefreshing(false);
@@ -184,48 +182,43 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 .add(R.id.fragment_container, mapFragment).commit();
 
 
-
-
-
-
-
     }
 
     private synchronized void initUser(final Bundle savedInstanceState) {
 
-        retrofit2.Call<List<Requests>> call=LoginActivity.apiInterface.getRequests(LoginActivity.prefConfig.readUserId());
+        retrofit2.Call<List<Requests>> call = LoginActivity.apiInterface.getRequests(LoginActivity.prefConfig.readUserId());
         call.enqueue(new Callback<List<Requests>>() {
             @Override
             public void onResponse(retrofit2.Call<List<Requests>> call, Response<List<Requests>> response) {
-                if(response.isSuccessful()){
-                    mRequestsList= (ArrayList<Requests>) response.body();
-                    mUserLocations=new ArrayList<>();
-                    if(mRequestsList.size()>0){
-                        for(int i=0; i<mRequestsList.size();i++){
-                            synchronized (this){
-                                DocumentReference locationRef=mDb.collection(getString(R.string.collection_user_location_student))
-                                        .document(Integer.toString( mRequestsList.get(i).getStudent_id()));
+                if (response.isSuccessful()) {
+                    mRequestsList = (ArrayList<Requests>) response.body();
+                    mUserLocations = new ArrayList<>();
+                    if (mRequestsList.size() > 0) {
+                        for (int i = 0; i < mRequestsList.size(); i++) {
+                            synchronized (this) {
+                                DocumentReference locationRef = mDb.collection(getString(R.string.collection_user_location_student))
+                                        .document(Integer.toString(mRequestsList.get(i).getStudent_id()));
                                 final int finalI = i;
                                 final int finalI1 = i;
                                 locationRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        if(task.isSuccessful()){
-                                            if(task.getResult()!= null){
+                                        if (task.isSuccessful()) {
+                                            if (task.getResult() != null) {
                                                 Log.d(TAG, "Location onComplete: ");
-                                                UserLocation userLocation=task.getResult().toObject(UserLocation.class);
-                                                UserLocation u=new UserLocation();
+                                                UserLocation userLocation = task.getResult().toObject(UserLocation.class);
+                                                UserLocation u = new UserLocation();
                                                 u.setGeo_point(userLocation.getGeo_point());
                                                 u.setRequests(mRequestsList.get(finalI1));
                                                 mUserLocations.add(u);
                                                 Log.d(TAG, "initUser: in user array");
-                                                if(finalI ==mRequestsList.size()-1){
+                                                if (finalI == mRequestsList.size() - 1) {
                                                     //notify();
                                                     init(savedInstanceState);
 
                                                 }
 
-                                            }else {
+                                            } else {
                                                 Log.d(TAG, "onComplete: result is empty");
                                             }
                                         }
@@ -235,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             }
 
                         }
-                    }else {
+                    } else {
                         init(savedInstanceState);
 
                     }
@@ -249,27 +242,21 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
 
 
-
-
     }
 
 
+    private void saveUserLocation(final UserLocation mUserLocation) {
+        if (mUserLocation != null) {
 
-
-
-
-    private void saveUserLocation(final UserLocation mUserLocation){
-        if(mUserLocation != null){
-
-            DocumentReference locationRef=mDb.collection(getString(R.string.userLocations_teachers))
+            DocumentReference locationRef = mDb.collection(getString(R.string.userLocations_teachers))
                     .document(Integer.toString(LoginActivity.prefConfig.readUserId()));
             locationRef.set(mUserLocation).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    if(task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         Log.d(TAG, "saveUserLocation:\ninserted user location into database" +
-                                "\n latitude: "+mUserLocation.getGeo_point().getLatitude() +
-                                "\n longitude: "+mUserLocation.getGeo_point().getLongitude());
+                                "\n latitude: " + mUserLocation.getGeo_point().getLatitude() +
+                                "\n longitude: " + mUserLocation.getGeo_point().getLongitude());
 
                     }
                 }
@@ -278,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
-    private void getLastKnownLocation( final UserLocation UserLocation) {
+    private void getLastKnownLocation(final UserLocation UserLocation) {
         Log.d(TAG, "getLastKnownLocation: ");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "getLastKnownLocation: inside");
@@ -287,55 +274,47 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         Log.d(TAG, "getLastKnownLocation: outside");
         mFusedLocationProviderClient.getLastLocation()
                 .addOnCompleteListener(this, new OnCompleteListener<Location>() {
-            @Override
-            public void onComplete(@NonNull Task<Location> task) {
-                Log.d(TAG, "onComplete: inside");
-                if(task.isSuccessful()) {
-                    if (task.getResult() != null) {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        Log.d(TAG, "onComplete: inside");
+                        if (task.isSuccessful()) {
+                            if (task.getResult() != null) {
 
 
-                        GeoPoint geoPoint = new GeoPoint(task.getResult().getLatitude(), task.getResult().getLongitude());
-                        Log.d(TAG, "onComplete: latitude " + geoPoint.getLatitude());
-                        Log.d(TAG, "onComplete: longitude " + geoPoint.getLongitude());
-                        UserLocation.setGeo_point(geoPoint);
-                        UserLocation.setTimestamp(null);
-                        saveUserLocation(UserLocation);
-                        Log.d(TAG, "onComplete: eeee");
+                                GeoPoint geoPoint = new GeoPoint(task.getResult().getLatitude(), task.getResult().getLongitude());
+                                Log.d(TAG, "onComplete: latitude " + geoPoint.getLatitude());
+                                Log.d(TAG, "onComplete: longitude " + geoPoint.getLongitude());
+                                UserLocation.setGeo_point(geoPoint);
+                                UserLocation.setTimestamp(null);
+                                saveUserLocation(UserLocation);
+                                Log.d(TAG, "onComplete: eeee");
+                            } else {
+                                Log.d(TAG, "onComplete: task is null");
+                            }
+                        } else {
+                            Log.d(TAG, "onComplete: task fail");
+                        }
+
                     }
-                    else {
-                        Log.d(TAG, "onComplete: task is null");
-                    }
-                }else {
-                    Log.d(TAG, "onComplete: task fail");
-                }
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
+                }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "onFailure: "+e.getMessage().toString());
+                Log.d(TAG, "onFailure: " + e.getMessage().toString());
             }
         });
         Log.d(TAG, "getLastKnownLocation: last");
     }
 
 
-
-
-
-
-
-
-
     @Override
     protected void onResume() {
         super.onResume();
 
-        if(checkMapServices()){
-            if(mLocationPermissionGranted){
+        if (checkMapServices()) {
+            if (mLocationPermissionGranted) {
                 Log.d(TAG, "onResume: ");
 
-            }else{
+            } else {
 
                 getLocationPermission();
 
@@ -343,9 +322,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
-    private boolean checkMapServices(){
-        if(isServicesOK()){
-            if(isMapsEnabled()){
+    private boolean checkMapServices() {
+        if (isServicesOK()) {
+            if (isMapsEnabled()) {
                 return true;
             }
         }
@@ -366,10 +345,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         alert.show();
     }
 
-    public boolean isMapsEnabled(){
-        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+    public boolean isMapsEnabled() {
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             buildAlertMessageNoGps();
             return false;
         }
@@ -394,22 +373,21 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
-    public boolean isServicesOK(){
+    public boolean isServicesOK() {
         Log.d(TAG, "isServicesOK: checking google services version");
 
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(MainActivity.this);
 
-        if(available == ConnectionResult.SUCCESS){
+        if (available == ConnectionResult.SUCCESS) {
             //everything is fine and the user can make map requests
             Log.d(TAG, "isServicesOK: Google Play Services is working");
             return true;
-        }
-        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
             //an error occured but we can resolve it
             Log.d(TAG, "isServicesOK: an error occured but we can fix it");
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(MainActivity.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
-        }else{
+        } else {
             Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
         }
         return false;
@@ -438,10 +416,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         Log.d(TAG, "onActivityResult: called.");
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ENABLE_GPS: {
-                if(mLocationPermissionGranted){
+                if (mLocationPermissionGranted) {
 
-                }
-                else{
+                } else {
                     getLocationPermission();
                 }
             }
@@ -457,7 +434,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.student_logout:
                 LoginActivity.prefConfig.writeUser("none");
                 LoginActivity.prefConfig.writeInsti("none");
@@ -465,15 +442,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 LoginActivity.prefConfig.writeLoginStatus(false);
                 LoginActivity.prefConfig.writeUserId(0);
                 finish();
-                startActivity(new Intent(this,LoginActivity.class));
-                default:
-                    return true;
+                startActivity(new Intent(this, LoginActivity.class));
+            default:
+                return true;
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.student_activity_toolbar,menu);
+        getMenuInflater().inflate(R.menu.student_activity_toolbar, menu);
         return true;
     }
 }

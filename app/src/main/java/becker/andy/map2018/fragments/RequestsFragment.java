@@ -20,7 +20,7 @@ import becker.andy.map2018.models.UserLocation;
  */
 public class RequestsFragment extends Fragment {
 
-    ArrayList<UserLocation> mUserlocations =new ArrayList<>();
+    ArrayList<UserLocation> mUserlocations = new ArrayList<>();
     RecyclerView mRecyclerView;
 
     public RequestsFragment() {
@@ -32,11 +32,11 @@ public class RequestsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_requests, container, false);
-        mRecyclerView=view.findViewById(R.id.request_recycler);
-        mUserlocations =getArguments().getParcelableArrayList(getString(R.string.userlocations_array));
+        View view = inflater.inflate(R.layout.fragment_requests, container, false);
+        mRecyclerView = view.findViewById(R.id.request_recycler);
+        mUserlocations = getArguments().getParcelableArrayList(getString(R.string.userlocations_array));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        RequestsAdapter requestsAdapter=new RequestsAdapter(mUserlocations,getActivity());
+        RequestsAdapter requestsAdapter = new RequestsAdapter(mUserlocations, getActivity());
         mRecyclerView.setAdapter(requestsAdapter);
         return view;
     }

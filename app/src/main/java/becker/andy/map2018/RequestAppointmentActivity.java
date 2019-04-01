@@ -36,14 +36,14 @@ public class RequestAppointmentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_appointment);
 
-        mProgressBar=findViewById(R.id.progressBar_request);
+        mProgressBar = findViewById(R.id.progressBar_request);
         mProgressBar.setVisibility(View.VISIBLE);
-        mStudentName=findViewById(R.id.appointment_request_name);
-        mDepartment=findViewById(R.id.appointment_request_dept);
-        mInstitution=findViewById(R.id.appointment_request_insti);
-        mSubject=findViewById(R.id.appointment_request_subject);
-        mDescription=findViewById(R.id.appointment_request_description);
-        mButtonRequestAppoinment=findViewById(R.id.btn_appointment_request);
+        mStudentName = findViewById(R.id.appointment_request_name);
+        mDepartment = findViewById(R.id.appointment_request_dept);
+        mInstitution = findViewById(R.id.appointment_request_insti);
+        mSubject = findViewById(R.id.appointment_request_subject);
+        mDescription = findViewById(R.id.appointment_request_description);
+        mButtonRequestAppoinment = findViewById(R.id.btn_appointment_request);
         mButtonRequestAppoinment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,19 +51,19 @@ public class RequestAppointmentActivity extends AppCompatActivity {
             }
         });
 
-        final int teacher_id= (int) getIntent().getExtras().get(getString(R.string.teacher_id_intent_extra));
+        final int teacher_id = (int) getIntent().getExtras().get(getString(R.string.teacher_id_intent_extra));
 
-        String institution=LoginActivity.prefConfig.readInsti();
+        String institution = LoginActivity.prefConfig.readInsti();
 
-        Call<List<Teacher>>call=LoginActivity.apiInterface.getTeachers(institution);
+        Call<List<Teacher>> call = LoginActivity.apiInterface.getTeachers(institution);
         call.enqueue(new Callback<List<Teacher>>() {
             @Override
             public void onResponse(Call<List<Teacher>> call, Response<List<Teacher>> response) {
-                if(response.isSuccessful()){
-                    List<Teacher> teacherList=response.body();
-                    for(Teacher teacher: teacherList ){
-                        if(teacher.getTeacher_id()==teacher_id){
-                            mTeacher=teacher;
+                if (response.isSuccessful()) {
+                    List<Teacher> teacherList = response.body();
+                    for (Teacher teacher : teacherList) {
+                        if (teacher.getTeacher_id() == teacher_id) {
+                            mTeacher = teacher;
                             init();
                         }
                     }
@@ -72,43 +72,43 @@ public class RequestAppointmentActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Teacher>> call, Throwable t) {
-                Toast.makeText(RequestAppointmentActivity.this,"Database Error: "+t.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(RequestAppointmentActivity.this, "Database Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private void requestAppointment() {
         mProgressBar.setVisibility(View.VISIBLE);
-        int student_id=LoginActivity.prefConfig.readUserId();
-        int teacher_id=mTeacher.getTeacher_id();
-        String subject=mSubject.getText().toString().trim();
-        String description=mSubject.getText().toString().trim();
-        if(subject.equals("")){
+        int student_id = LoginActivity.prefConfig.readUserId();
+        int teacher_id = mTeacher.getTeacher_id();
+        String subject = mSubject.getText().toString().trim();
+        String description = mSubject.getText().toString().trim();
+        if (subject.equals("")) {
             mProgressBar.setVisibility(View.GONE);
-            Toast.makeText(this,"Have to give a subject at least!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Have to give a subject at least!", Toast.LENGTH_LONG).show();
             return;
         }
 
-        Call<User>call=LoginActivity.apiInterface.requestAppointment(teacher_id,student_id,subject,description);
+        Call<User> call = LoginActivity.apiInterface.requestAppointment(teacher_id, student_id, subject, description);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                if(response.isSuccessful()){
-                    if(response.body().getResponse().equals("ok")){
-                        Toast.makeText(RequestAppointmentActivity.this,"Request sent!",Toast.LENGTH_LONG).show();
+                if (response.isSuccessful()) {
+                    if (response.body().getResponse().equals("ok")) {
+                        Toast.makeText(RequestAppointmentActivity.this, "Request sent!", Toast.LENGTH_LONG).show();
                         finish();
-                        startActivity(new Intent(RequestAppointmentActivity.this,MainActivityStudent.class));
-                    }else {
-                        Toast.makeText(RequestAppointmentActivity.this,"Database Error: Request not sent",Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(RequestAppointmentActivity.this, MainActivityStudent.class));
+                    } else {
+                        Toast.makeText(RequestAppointmentActivity.this, "Database Error: Request not sent", Toast.LENGTH_LONG).show();
                     }
-                }else {
-                    Toast.makeText(RequestAppointmentActivity.this,"Database Error: Request not sent",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(RequestAppointmentActivity.this, "Database Error: Request not sent", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(RequestAppointmentActivity.this,"Database Error: Request not sent",Toast.LENGTH_LONG).show();
+                Toast.makeText(RequestAppointmentActivity.this, "Database Error: Request not sent", Toast.LENGTH_LONG).show();
             }
         });
     }

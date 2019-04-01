@@ -20,7 +20,7 @@ import becker.andy.map2018.models.UserLocationStudent;
  * A simple {@link Fragment} subclass.
  */
 public class TeachersFragment extends Fragment {
-    ArrayList<UserLocationStudent> mUserlocations =new ArrayList<>();
+    ArrayList<UserLocationStudent> mUserlocations = new ArrayList<>();
     RecyclerView mRecyclerView;
     TeacherAdapter adapter;
 
@@ -33,13 +33,13 @@ public class TeachersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_teachers, container, false);
-        mRecyclerView=view.findViewById(R.id.teacher_recycler);
+        View view = inflater.inflate(R.layout.fragment_teachers, container, false);
+        mRecyclerView = view.findViewById(R.id.teacher_recycler);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mUserlocations=getArguments().getParcelableArrayList(getString(R.string.userlocations_array));
-        if(mUserlocations.size()>0){
-            TeacherAdapter teacherAdapter=new TeacherAdapter(mUserlocations,getActivity());
-            adapter=teacherAdapter;
+        mUserlocations = getArguments().getParcelableArrayList(getString(R.string.userlocations_array));
+        if (mUserlocations.size() > 0) {
+            TeacherAdapter teacherAdapter = new TeacherAdapter(mUserlocations, getActivity());
+            adapter = teacherAdapter;
         }
 
         mRecyclerView.setAdapter(adapter);
