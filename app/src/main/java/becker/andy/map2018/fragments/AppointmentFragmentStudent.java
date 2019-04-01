@@ -40,8 +40,8 @@ public class AppointmentFragmentStudent extends Fragment {
 
 
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_appointment_fragment_student, container, false);
-        mRecyclerView=view.findViewById(R.id.appointment_student_recycler);
+        View view = inflater.inflate(R.layout.fragment_appointment_fragment_student, container, false);
+        mRecyclerView = view.findViewById(R.id.appointment_student_recycler);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         getAppointments();
 
@@ -49,15 +49,15 @@ public class AppointmentFragmentStudent extends Fragment {
     }
 
     private void getAppointments() {
-        int student_id=LoginActivity.prefConfig.readUserId();
+        int student_id = LoginActivity.prefConfig.readUserId();
 
-        Call<List<Appointment>> call=LoginActivity.apiInterface.getAppointmentsStudent(student_id);
+        Call<List<Appointment>> call = LoginActivity.apiInterface.getAppointmentsStudent(student_id);
         call.enqueue(new Callback<List<Appointment>>() {
             @Override
             public void onResponse(Call<List<Appointment>> call, Response<List<Appointment>> response) {
-                if(response.isSuccessful()){
-                    mAppointments=response.body();
-                    if(mAppointments.size()>0){
+                if (response.isSuccessful()) {
+                    mAppointments = response.body();
+                    if (mAppointments.size() > 0) {
                         setAdapter();
                     }
 
@@ -66,14 +66,20 @@ public class AppointmentFragmentStudent extends Fragment {
 
             @Override
             public void onFailure(Call<List<Appointment>> call, Throwable t) {
-                Toast.makeText(getActivity(),"Database Error: "+t.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Database Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private void setAdapter() {
-        AppoinmentAdapterStudent appoinmentAdapterStudent=new AppoinmentAdapterStudent(mAppointments,getActivity());
-        mRecyclerView.setAdapter(appoinmentAdapterStudent);
+        if (mAppointments.size() > 0) {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            AppoinmentAdapterStudent appoinmentAdapterStudent = new AppoinmentAdapterStudent(mAppointments, getActivity());
+            mRecyclerView.setAdapter(appoinmentAdapterStudent);
+        } else {
+            mRecyclerView.setVisibility(View.GONE);
+        }
+
     }
 
 }

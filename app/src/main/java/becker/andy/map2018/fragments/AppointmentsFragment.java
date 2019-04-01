@@ -1,6 +1,7 @@
 package becker.andy.map2018.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,8 +41,8 @@ public class AppointmentsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_appointments, container, false);
-        mRecyclerView=view.findViewById(R.id.appointment_recycler);
+        View view = inflater.inflate(R.layout.fragment_appointments, container, false);
+        mRecyclerView = view.findViewById(R.id.appointment_recycler);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         getAppointments();
 
@@ -49,27 +50,33 @@ public class AppointmentsFragment extends Fragment {
     }
 
     private void getAppointments() {
-        int teacher_id=LoginActivity.prefConfig.readUserId();
-        Call<List<Appointment>>call=LoginActivity.apiInterface.getAppointments(teacher_id);
+        int teacher_id = LoginActivity.prefConfig.readUserId();
+        Call<List<Appointment>> call = LoginActivity.apiInterface.getAppointments(teacher_id);
         call.enqueue(new Callback<List<Appointment>>() {
             @Override
             public void onResponse(Call<List<Appointment>> call, Response<List<Appointment>> response) {
-                if(response.isSuccessful()){
-                    mAppointments=response.body();
+                if (response.isSuccessful()) {
+                    mAppointments = response.body();
                     setAdapter();
                 }
             }
 
             @Override
             public void onFailure(Call<List<Appointment>> call, Throwable t) {
-                Toast.makeText(getActivity(),"Database Error: "+t.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Database Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private void setAdapter() {
-        AppointmentAdapter appointmentAdapter=new AppointmentAdapter(mAppointments,getActivity());
-        mRecyclerView.setAdapter(appointmentAdapter);
+        if (mAppointments.size() > 0) {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            AppointmentAdapter appointmentAdapter = new AppointmentAdapter(mAppointments, getActivity());
+            mRecyclerView.setAdapter(appointmentAdapter);
+        } else {
+            mRecyclerView.setVisibility(View.GONE);
+        }
+
     }
 
 }

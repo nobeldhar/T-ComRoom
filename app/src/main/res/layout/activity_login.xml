@@ -11,15 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:scaleType="centerCrop"
         android:layout_centerHorizontal="true"
-        app:radius="24"
-        android:src="@drawable/shahidminar" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/shahidminar"
+        app:radius="24" />
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_height="wrap_content">
+        android:layout_centerHorizontal="true">
 
         <ProgressBar
             android:id="@+id/progressBarLogin"
@@ -29,115 +30,127 @@
             android:indeterminate="true"
             android:visibility="invisible" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ImageView
             android:id="@+id/white_imageLogin"
             android:layout_width="290dp"
+            android:layout_height="350dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/white_image"
-            android:layout_height="350dp" />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="290dp"
-        android:layout_height="350dp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
-        <TextView
-            android:layout_marginTop="20dp"
-            android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:gravity="center"
-            android:background="@drawable/new_acc_btn"
-            android:text="T-ComRoom"
-            android:textStyle="bold"
-            android:textSize="30dp"
-            android:layout_centerHorizontal="true"/>
-        <RelativeLayout
-            android:layout_marginTop="100dp"
-            android:layout_centerHorizontal="true"
-            android:layout_width="250dp"
-            android:layout_height="50dp">
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:id="@+id/person"
-                android:layout_centerVertical="true"
-                android:src="@drawable/baseline_person_black_18dp"
-                />
-            <EditText
-                android:id="@+id/login_email"
-                android:inputType="textEmailAddress"
-                android:layout_toEndOf="@+id/person"
-                android:layout_marginRight="2dp"
-                android:textSize="15dp"
-                android:textColor="@android:color/black"
-                android:hint="Email"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_marginTop="160dp"
-            android:layout_centerHorizontal="true"
-            android:layout_width="250dp"
-            android:layout_height="50dp">
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:id="@+id/lock"
-                android:layout_centerVertical="true"
-                android:src="@drawable/baseline_lock_black_18dp"
-                />
-            <EditText
-                android:id="@+id/login_password"
-                android:hint="Password"
-                android:textSize="15dp"
-                android:textColor="@android:color/black"
-                android:layout_marginRight="2dp"
-                android:inputType="textPassword"
-                android:layout_toEndOf="@+id/lock"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </RelativeLayout>
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="50dp"
-            android:layout_width="200dp"
-            android:background="@drawable/login_btn"
-            android:text="login"
-            android:elevation="3dp"
-            android:textColor="@android:color/white"
-            android:layout_alignParentBottom="true"
-            android:layout_height="45dp" />
+            android:src="@drawable/white_image" />
     </RelativeLayout>
 
     <RelativeLayout
+        android:layout_width="290dp"
+        android:layout_height="350dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/new_acc_btn"
+            android:gravity="center"
+            android:text="T-ComRoom"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp">
+
+            <ImageView
+                android:id="@+id/person"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/baseline_person_black_18dp" />
+
+            <EditText
+                android:id="@+id/login_email"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="2dp"
+                android:layout_toEndOf="@+id/person"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:textColor="@android:color/black"
+                android:textSize="15dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="160dp">
+
+            <ImageView
+                android:id="@+id/lock"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/baseline_lock_black_18dp" />
+
+            <EditText
+                android:id="@+id/login_password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="2dp"
+                android:layout_toEndOf="@+id/lock"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:textColor="@android:color/black"
+                android:textSize="15dp" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="200dp"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/login_btn"
+            android:elevation="3dp"
+            android:text="login"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="250dp"
+        android:layout_height="45dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-        android:layout_width="250dp"
-        android:layout_height="45dp">
+        android:layout_marginBottom="20dp">
+
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toStartOf="@+id/btn_new_acc_login"
+            android:gravity="end|center_vertical"
             android:text="Need a new Account? "
             android:textColor="@android:color/white"
             android:textSize="17dp"
-            android:gravity="end|center_vertical"
-            android:textStyle="bold"
-            android:layout_toStartOf="@+id/btn_new_acc_login"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:textStyle="bold" />
+
         <ImageButton
             android:id="@+id/btn_new_acc_login"
-            android:layout_alignParentRight="true"
             android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
             android:background="@drawable/new_acc_btn"
-            android:src="@drawable/baseline_arrow_forward_black_18dp"
-            android:layout_height="match_parent" />
+            android:src="@drawable/baseline_arrow_forward_black_18dp" />
     </RelativeLayout>
+
 
 </RelativeLayout>
 

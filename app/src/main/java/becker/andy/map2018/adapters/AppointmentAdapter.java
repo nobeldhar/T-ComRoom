@@ -18,7 +18,7 @@ import becker.andy.map2018.ShowAppointmentActivity;
 import becker.andy.map2018.models.Appointment;
 import becker.andy.map2018.models.Requests;
 
-public class AppointmentAdapter  extends RecyclerView.Adapter<AppointmentAdapter.MyViewHolder>{
+public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.MyViewHolder> {
     List<Appointment> mAppointments;
     Context context;
 
@@ -30,7 +30,7 @@ public class AppointmentAdapter  extends RecyclerView.Adapter<AppointmentAdapter
     @NonNull
     @Override
     public AppointmentAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view=LayoutInflater.from(context).inflate(R.layout.appointment,viewGroup,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.appointment, viewGroup, false);
         return new AppointmentAdapter.MyViewHolder(view);
     }
 
@@ -45,8 +45,8 @@ public class AppointmentAdapter  extends RecyclerView.Adapter<AppointmentAdapter
         myViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context,ShowAppointmentActivity.class)
-                        .putExtra(context.getString(R.string.showAppointment_extra),mAppointments.get(i).getStudent_id()));
+                context.startActivity(new Intent(context, ShowAppointmentActivity.class)
+                        .putExtra(context.getString(R.string.showAppointment_extra), mAppointments.get(i).getStudent_id()));
             }
         });
 
@@ -68,12 +68,12 @@ public class AppointmentAdapter  extends RecyclerView.Adapter<AppointmentAdapter
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            name=itemView.findViewById(R.id.appointment_name);
-            institute=itemView.findViewById(R.id.appointment_institute);
-            dept=itemView.findViewById(R.id.appointment_dept);
-            y_s=itemView.findViewById(R.id.appointment_ys);
-            sub=itemView.findViewById(R.id.appointment_sub);
-            cardView=itemView.findViewById(R.id.appointment_model);
+            name = itemView.findViewById(R.id.appointment_name);
+            institute = itemView.findViewById(R.id.appointment_institute);
+            dept = itemView.findViewById(R.id.appointment_dept);
+            y_s = itemView.findViewById(R.id.appointment_ys);
+            sub = itemView.findViewById(R.id.appointment_sub);
+            cardView = itemView.findViewById(R.id.appointment_model);
 
         }
     }

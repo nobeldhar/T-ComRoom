@@ -5,7 +5,7 @@ import android.app.Application;
 import becker.andy.map2018.models.User;
 
 public class UserClient extends Application {
-    private User user=null;
+    private User user = null;
 
     public User getUser() {
         return user;
